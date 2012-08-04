@@ -43,9 +43,6 @@ public class Assets {
 
 	private static TextureAtlas atlas;
 
-	public static final float VIRTUAL_WIDTH = 30.0f;
-	public static final float VIRTUAL_HEIGHT = 20.0f;
-
     public static AtlasRegion pureWhiteTextureRegion;
     public static TextureRegion playerFly1;
 	public static TextureRegion playerFly2;
@@ -67,8 +64,6 @@ public class Assets {
 
 	public static CollisionGeometry playerGeometry;
 
-	public static float pixelDensity;
-
 	public static void load () {
 		String textureDir = "sprites";
 		String textureFile = textureDir + "/pack";
@@ -84,6 +79,7 @@ public class Assets {
 		playerFly1 = atlas.findRegion("PlayerAnim1");
 		playerFly2 = atlas.findRegion("PlayerAnim2");
 		playerFly3 = atlas.findRegion("PlayerAnim3");
+
 		playerLeft = atlas.findRegion("PlayerLeft");
 		playerRight = atlas.findRegion("PlayerRight");
 		playerShot = atlas.findRegion("PlayerShot");
@@ -91,7 +87,7 @@ public class Assets {
 	}
 
 	private static void createAnimations () {
-		playerAnimation = new Animation(PLAYER_FRAME_DURATION, playerFly1, playerFly2, playerFly3);
+		playerAnimation = new Animation(PLAYER_FRAME_DURATION, playerFly1, playerLeft, playerRight);
 	}
 
     private static void loadFonts () {
@@ -101,9 +97,9 @@ public class Assets {
         textFont = new BitmapFont(Gdx.files.internal(fontDir + TEXT_FONT), false);
         flyupFont = new BitmapFont(Gdx.files.internal(fontDir + FLYUP_FONT), false);
 
-        scoreFont.setScale(1.0f / pixelDensity);
-        textFont.setScale(1.0f / pixelDensity);
-        flyupFont.setScale(1.0f / pixelDensity);
+        scoreFont.setScale(1.0f);
+        textFont.setScale(1.0f);
+        flyupFont.setScale(1.0f);
     }
 
 	private static void loadSounds () {
@@ -147,11 +143,11 @@ public class Assets {
 	}
 
 	private static float toWidth (TextureRegion region) {
-		return region.getRegionWidth() / pixelDensity;
+		return region.getRegionWidth();
 	}
 
 	private static float toHeight (TextureRegion region) {
-		return region.getRegionHeight() / pixelDensity;
+		return region.getRegionHeight();
 	}
 
 	public static void playSound (Sound sound) {

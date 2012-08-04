@@ -17,7 +17,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,8 +25,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
-import com.todoroo.zxzx.general.CameraHelper;
-import com.todoroo.zxzx.general.CameraHelper.ViewportMode;
 import com.todoroo.zxzx.general.Config;
 import com.todoroo.zxzx.general.GameObject;
 import com.todoroo.zxzx.general.Particle;
@@ -66,8 +63,6 @@ public class WorldView {
 	private final ParticleManager particleManager;
 	private final ParticleAdapter particleAdapter;
 
-    private Texture dropImage;
-
 	/** Constructs a new WorldView.
 	 *
 	 * @param world the {@link World} that this is a view of.
@@ -76,9 +71,10 @@ public class WorldView {
 		this.world = world;
 		this.presenter = presenter;
 
-		worldCam = CameraHelper.createCamera2(ViewportMode.PIXEL_PERFECT,
-		        Assets.VIRTUAL_WIDTH, Assets.VIRTUAL_HEIGHT, Assets.pixelDensity);
+		worldCam = new OrthographicCamera();
+		worldCam.setToOrtho(false, 800, 1280);
 		worldCam.update();
+
 		spriteBatch = new SpriteBatch();
 		spriteCache = new SpriteCache(SPRITE_CACHE_SIZE, true);
 		spriteBatch.setProjectionMatrix(worldCam.combined);
@@ -89,8 +85,6 @@ public class WorldView {
 		joystick = new Vector2();
 		particleManager = new ParticleManager(MAX_PARTICLES, PARTICLE_SIZE);
 		particleAdapter = new ParticleAdapter(world, particleManager);
-
-		dropImage = new Texture(Gdx.files.internal("generic_water.png"));
 	}
 
 	public void update (float delta) {
@@ -111,9 +105,6 @@ public class WorldView {
                 cacheTransform.idt();
                 spriteCache.setTransformMatrix(cacheTransform);
                 spriteBatch.setTransformMatrix(cacheTransform);
-
-                Player player = world.getPlayer();
-                System.err.println("drawing player " + player.x + ", " + player.y + " @ " + player.width + ", " + player.height);
             }
 
         case World.PLAYER_DEAD:
@@ -161,7 +152,6 @@ public class WorldView {
 		    draw(player, Assets.playerAnimation.getKeyFrame(player.stateTime, true));
 		    break;
 		}
-		spriteBatch.draw(dropImage, player.x, player.y);
 	}
 
 	private void draw (GameObject go, TextureRegion region) {

@@ -90,7 +90,7 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		}
 
 		// Clear the screen and draw the views.
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+		Gdx.gl.glClearColor(8/255.0f, 54/255.0f, 129/255.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		worldView.render(delta);
 

@@ -143,8 +143,8 @@ public class World {
     }
 
     private void placePlayer () {
-        player.x = roomBounds.width / 2;
-        player.y = roomBounds.height / 2;
+        player.x = roomBounds.width / 2 - player.width / 2;
+        player.y = player.height * 2;
 
         player.setState(Player.FLYING);
     }
