@@ -3,6 +3,7 @@
 	<name>zxzx-android</name>
 	<comment></comment>
 	<projects>
+		<project>zxzx</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

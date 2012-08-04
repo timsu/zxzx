@@ -1,0 +1,47 @@
+
+1945.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+PlayerAnim1
+  rotate: false
+  xy: 301, 103
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+PlayerAnim2
+  rotate: false
+  xy: 301, 169
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+PlayerAnim3
+  rotate: false
+  xy: 301, 235
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+PlayerLeft
+  rotate: false
+  xy: 697, 202
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+PlayerRight
+  rotate: false
+  xy: 697, 268
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+PlayerShot
+  rotate: false
+  xy: 37, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
