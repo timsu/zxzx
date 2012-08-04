@@ -15,11 +15,6 @@ package com.todoroo.zxzx;
 
 
 public interface WorldListener {
-	public void onCaptainActivated (float time);
-
-	public void onEnteredRoom (float time, int robots);
-
-	public void onExitedRoom (float time, int robots);
 
 	public void onPlayerFired ();
 

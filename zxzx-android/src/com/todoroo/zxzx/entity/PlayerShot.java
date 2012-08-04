@@ -2,8 +2,8 @@ package com.todoroo.zxzx.entity;
 
 
 
+import com.todoroo.zxzx.Assets;
 import com.todoroo.zxzx.general.Config;
-import com.todoroo.zxzx.helpers.Assets;
 
 public class PlayerShot extends BaseShot {
 

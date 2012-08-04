@@ -11,7 +11,7 @@
  * governing permissions and limitations under the License.
  */
 
-package com.todoroo.zxzx.helpers;
+package com.todoroo.zxzx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -45,7 +46,8 @@ public class Assets {
 	public static final float VIRTUAL_WIDTH = 30.0f;
 	public static final float VIRTUAL_HEIGHT = 20.0f;
 
-	public static TextureRegion playerFly1;
+    public static AtlasRegion pureWhiteTextureRegion;
+    public static TextureRegion playerFly1;
 	public static TextureRegion playerFly2;
 	public static TextureRegion playerFly3;
 	public static TextureRegion playerLeft;
@@ -85,6 +87,7 @@ public class Assets {
 		playerLeft = atlas.findRegion("PlayerLeft");
 		playerRight = atlas.findRegion("PlayerRight");
 		playerShot = atlas.findRegion("PlayerShot");
+		pureWhiteTextureRegion = atlas.findRegion("8x8");
 	}
 
 	private static void createAnimations () {

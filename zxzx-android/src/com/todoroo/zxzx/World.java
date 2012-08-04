@@ -13,15 +13,16 @@
 
 package com.todoroo.zxzx;
 
-import com.badlogic.gdx.graphics.Color;
+import static com.badlogic.gdx.math.MathUtils.random;
+
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
 import com.todoroo.zxzx.general.Config;
 import com.todoroo.zxzx.general.GameObject;
+import com.todoroo.zxzx.general.Pools;
 
 /** The <code>World</code> is the representation of the game world of <b>Very Angry Robots</b>. It knows nothing about how it will
  * be displayed, neither does it know about how the player is controlled, particle effects, sounds, nor anything else. It purely
@@ -48,94 +49,30 @@ public class World {
 
 	private static final int MAX_PLAYER_SHOTS = Config.asInt("Player.maxShots", 4);
 	private static final float FIRING_INTERVAL = Config.asFloat("Player.firingInterval", 0.25f);
-	public static final float ROOM_TRANSITION_TIME = Config.asFloat("Global.roomTransitionTime", 0.5f);
 
 	// Game states.
 	public static final int RESETTING = 1;
-	public static final int ENTERED_ROOM = 2;
-	public static final int PLAYING = 3;
-	public static final int PLAYER_DEAD = 4;
+	public static final int PLAYING = 2;
+	public static final int PLAYER_DEAD = 3;
 
 	private final Pool<PlayerShot> shotPool;
 	private final Rectangle roomBounds;
 	private float playingTime;
 	private float nextFireTime;
-	private Vector2 playerPos;
 	private float now;
-	private Array<Rectangle> doorRects;
-	private Array<Rectangle> wallRects;
-	private int doorPosition;
 	private Player player;
 	private Array<PlayerShot> playerShots;
 	private int state;
+	private int level;
 	private float stateTime;
-	private Color robotColor;
 	private boolean isPaused;
 	private float pausedTime;
-
-	public void pause () {
-		isPaused = true;
-		pausedTime = 0.0f;
-	}
-
-	public void resume () {
-		isPaused = false;
-	}
-
-	public boolean isPaused () {
-		return isPaused;
-	}
-
-	public float getPausedTime () {
-		return pausedTime;
-	}
-
-	public int getState () {
-		return state;
-	}
-
-	private void setState (int newState) {
-		state = newState;
-		stateTime = 0.0f;
-	}
-
-	public float getStateTime () {
-		return stateTime;
-	}
-
-	public Color getRobotColor () {
-		return robotColor;
-	}
-
-	public int getDoorPosition () {
-		return doorPosition;
-	}
-
-	public Array<Rectangle> getDoorRects () {
-		return doorRects;
-	}
-
-	public Array<Rectangle> getWallRects () {
-		return wallRects;
-	}
-
-	public Rectangle getRoomBounds () {
-		return roomBounds;
-	}
-
-	public Player getPlayer () {
-		return player;
-	}
-
-	public Array<PlayerShot> getPlayerShots () {
-		return playerShots;
-	}
 
 	/** Constructs a new {@link World}. */
 	public World() {
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
-		playerPos = new Vector2();
+		level = 1;
 
 		shotPool = new Pool<PlayerShot>(MAX_PLAYER_SHOTS, MAX_PLAYER_SHOTS) {
 			@Override
@@ -150,6 +87,8 @@ public class World {
 		setState(RESETTING);
 	}
 
+	// -------- updating
+
 	/** Called when the {@link World} is to be updated.
 	 *
 	 * @param delta the time in seconds since the last render. */
@@ -157,7 +96,10 @@ public class World {
 		if (!isPaused) {
 			now += delta;
 			stateTime += delta;
-			switch (state) {
+            switch (state) {
+            case RESETTING:
+                updateResetting();
+                break;
 			case PLAYING:
 				updatePlaying(delta);
 				break;
@@ -176,10 +118,102 @@ public class World {
         updateMobiles(delta);
     }
 
-	private void update (Array<? extends GameObject> gos, float delta) {
-		for (GameObject go : gos) {
-			go.update(delta);
-		}
-	}
+    private void updateResetting () {
+        populateLevel();
+    }
+
+    private void update (Array<? extends GameObject> gos, float delta) {
+        for (GameObject go : gos) {
+            go.update(delta);
+        }
+    }
+
+	// ------- position initialization
+
+    private void populateLevel () {
+        setRandomSeedFromLevel();
+        placePlayer();
+        createPlayerShots();
+        setState(PLAYING);
+    }
+
+    private void setRandomSeedFromLevel () {
+        long seed = level;
+        random.setSeed(seed);
+    }
+
+    private void placePlayer () {
+        player.x = roomBounds.width / 2;
+        player.y = roomBounds.height / 2;
+
+        player.setState(Player.FLYING);
+    }
+
+
+    private void createPlayerShots () {
+        playerShots = Pools.makeArrayFromPool(playerShots, shotPool, MAX_PLAYER_SHOTS);
+    }
+
+	// ------- shot mechanics
+
+    public final FireCommand firePlayerShot = new FireCommand() {
+        public void fire (GameObject firer, float dx, float dy) {
+            if (now >= nextFireTime) {
+                addPlayerShot(dx, dy);
+                nextFireTime = now + FIRING_INTERVAL;
+            }
+        }
+    };
+
+    private void addPlayerShot (float dx, float dy) {
+        if (state == PLAYING && playerShots.size < MAX_PLAYER_SHOTS) {
+            PlayerShot shot = shotPool.obtain();
+            shot.inCollision = false;
+            float x = player.x + player.width / 2 - shot.width / 2;
+            float y = player.y + player.height / 2 - shot.height / 2;
+            shot.fire(x, y, dx, dy);
+            playerShots.add(shot);
+        }
+    }
+
+    // -------- getters / setters
+
+    public void pause () {
+        isPaused = true;
+        pausedTime = 0.0f;
+    }
+
+    public void resume () {
+        isPaused = false;
+    }
+
+    public boolean isPaused () {
+        return isPaused;
+    }
+
+    public float getPausedTime () {
+        return pausedTime;
+    }
+
+    public int getState () {
+        return state;
+    }
+
+    private void setState (int newState) {
+        state = newState;
+        stateTime = 0.0f;
+    }
+
+    public float getStateTime () {
+        return stateTime;
+    }
+
+    public Player getPlayer () {
+        return player;
+    }
+
+    public Array<PlayerShot> getPlayerShots () {
+        return playerShots;
+    }
 
 }

@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.todoroo.zxzx.helpers.Assets;
+import com.todoroo.zxzx.Assets;
 
 public class SimpleButton {
 	private HAlignment alignment;

@@ -51,19 +51,19 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 	public void show () {
 		Gdx.input.setCatchBackKey(true);
 		wasBackPressed = false;
-		//world.reset();
-		//world.resume();
+		world.reset();
+		world.resume();
 	}
 
 	@Override
 	public void pause () {
-		//world.pause();
+		world.pause();
 	}
 
 	@Override
 	public void resume () {
 		Gdx.input.setCatchBackKey(true);
-		//world.resume();
+		world.resume();
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		}
 
 		// Clear the screen and draw the views.
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		worldView.render(delta);
 
@@ -98,8 +98,6 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		if (!wasBackPressed && isBackPressed) {
 			if (!world.isPaused()) {
 				world.pause();
-			} else {
-				game.setScreen(game.mainMenuScreen);
 			}
 		}
 		wasBackPressed = isBackPressed;
