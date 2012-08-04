@@ -87,7 +87,7 @@ public class Assets {
 	}
 
 	private static void createAnimations () {
-		playerAnimation = new Animation(PLAYER_FRAME_DURATION, playerFly1, playerLeft, playerRight);
+		playerAnimation = new Animation(PLAYER_FRAME_DURATION, playerFly1, playerFly2, playerFly3);
 	}
 
     private static void loadFonts () {
