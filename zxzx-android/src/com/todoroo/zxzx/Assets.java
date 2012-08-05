@@ -29,7 +29,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.todoroo.zxzx.general.CollisionGeometry;
 import com.todoroo.zxzx.general.Config;
-import com.todoroo.zxzx.general.Rectangles;
 
 
 public class Assets {
@@ -39,8 +38,6 @@ public class Assets {
     private static final String TEXT_FONT = Config.asString("Global.textFont", "ocr_a.fnt");
 
     private static final float PLAYER_FRAME_DURATION = Config.asFloat("Player.frameDuration", 0.1f);
-    private static final float PLAYER_BORDER_WIDTH = Config.asFloat("Player.borderWidthPercent", 12.5f);
-    private static final float PLAYER_BORDER_HEIGHT = Config.asFloat("Player.borderHeightPercent", 30.0f);
 
 	private static TextureAtlas atlas;
 
@@ -97,7 +94,7 @@ public class Assets {
 		pureWhiteTextureRegion = atlas.findRegion("8x8");
 
 		Texture enemies = new Texture(Gdx.files.internal("sprites/enemies.png"));
-		alien1 = new TextureRegion(enemies, 20, 90, 480, 332);
+		alien1 = new TextureRegion(enemies, 5, 5, 500, 500);
 
 		System.err.println("loaded textures");
 	}
@@ -156,13 +153,9 @@ public class Assets {
 
 		// Configure player collision geometry.
 		Array<Rectangle> playerRectangles = new Array<Rectangle>();
-		Rectangle r = new Rectangle();
-		float x = (playerWidth * PLAYER_BORDER_WIDTH / 100.0f) / 2.0f;
-		float y = (playerHeight * PLAYER_BORDER_HEIGHT / 100.0f) / 2.0f;
-		float w = playerWidth - 2 * x;
-		float h = playerHeight - 2 * y;
-		Rectangles.setRectangle(r, x, y, w, h);
-		playerRectangles.add(r);
+		playerRectangles.add(new Rectangle(4, 36, 57, 12));
+		playerRectangles.add(new Rectangle(19, 13, 27, 40));
+		playerRectangles.add(new Rectangle(15, 14, 35, 7));
 		playerGeometry = new CollisionGeometry(playerRectangles);
 	}
 

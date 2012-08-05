@@ -54,6 +54,7 @@ public class WorldView {
 	private final Presenter presenter;
 	private OrthographicCamera worldCam;
 	private BackgroundRenderer backgroundRenderer;
+	private GeometryRenderer geometryRenderer;
 	private Matrix4 cacheTransform;
 	private SpriteBatch spriteBatch;
 	private Vector3 touchPoint;
@@ -77,6 +78,7 @@ public class WorldView {
 		spriteBatch = new SpriteBatch();
 		spriteBatch.setProjectionMatrix(worldCam.combined);
 		backgroundRenderer = new BackgroundRenderer(worldCam);
+		geometryRenderer = new GeometryRenderer(worldCam);
 		cacheTransform = new Matrix4();
 		touchPoint = new Vector3();
 		dragPoint = new Vector3();

@@ -135,11 +135,11 @@ public class World {
     private void updatePlaying (float delta) {
         player.update(delta);
         alienShip.update(delta);
+        updateMobiles(delta);
 
         if (now >= nextFireTime)
             addPlayerShot(0, SHOT_SPEED);
 
-        updateMobiles(delta);
         checkForCollisions();
         clipBounds();
     }

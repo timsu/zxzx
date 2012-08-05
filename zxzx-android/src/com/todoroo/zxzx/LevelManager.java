@@ -42,12 +42,12 @@ public class LevelManager {
         alienShip.height = levelData.alienTexture.getRegionHeight();
 
         Array<Rectangle> rectangles = new Array<Rectangle>();
-        float x = (alienShip.width - levelData.alienWidth) / 2.0f;
-        float y = (alienShip.height- levelData.alienHeight) / 2.0f;
-        float w = alienShip.width - 2 * x;
-        float h = alienShip.height - 2 * y;
-        Rectangle r = new Rectangle(x, y, w, h);
-        rectangles.add(r);
+        rectangles.add(new Rectangle(30, 140, 60, 154));
+        rectangles.add(new Rectangle(415, 140, 60, 154));
+        rectangles.add(new Rectangle(220, 120, 66, 154));
+        rectangles.add(new Rectangle(115, 195, 270, 92));
+        rectangles.add(new Rectangle(30, 250, 445, 116));
+        rectangles.add(new Rectangle(70, 340, 380, 70));
         alienShip.geometry = new CollisionGeometry(rectangles);
 
         return alienShip;

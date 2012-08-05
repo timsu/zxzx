@@ -5,12 +5,9 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.todoroo.zxzx.general.Config;
 
 public class BackgroundRenderer {
-
-    private ShapeRenderer shapeRenderer;
 
     private OrthographicCamera camera;
 
@@ -24,8 +21,6 @@ public class BackgroundRenderer {
     private Random random = new Random();
 
     public BackgroundRenderer(OrthographicCamera camera) {
-        shapeRenderer = new ShapeRenderer(500);
-        shapeRenderer.setProjectionMatrix(camera.combined);
         this.camera = camera;
 
         for(int i = 0; i < BG_WAVE_COUNT; i++) {
