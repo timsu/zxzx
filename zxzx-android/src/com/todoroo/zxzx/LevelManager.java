@@ -42,9 +42,9 @@ public class LevelManager {
         alienShip.height = levelData.alienTexture.getRegionHeight();
 
         Array<Rectangle> rectangles = new Array<Rectangle>();
-        rectangles.add(new Rectangle(30, 140, 60, 154));
-        rectangles.add(new Rectangle(415, 140, 60, 154));
-        rectangles.add(new Rectangle(220, 120, 66, 154));
+        rectangles.add(new Rectangle(30, 150, 60, 144));
+        rectangles.add(new Rectangle(415, 150, 60, 144));
+        rectangles.add(new Rectangle(220, 130, 66, 144));
         rectangles.add(new Rectangle(115, 195, 270, 92));
         rectangles.add(new Rectangle(30, 250, 445, 116));
         rectangles.add(new Rectangle(70, 340, 380, 70));
