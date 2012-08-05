@@ -51,11 +51,33 @@ public class LevelManager {
                     AlienShip alienShip = new AlienShip(Assets.alien2,
                             new String[] { "248shot.xml", "[G_DARIUS]_homing_laser.xml" },
                             new Point[] { new Point(71, 271), new Point(437, 271) },
-                            90);
+                            100);
 
                     Array<Rectangle> rectangles = new Array<Rectangle>();
                     rectangles.add(new Rectangle(184, 126, 137, 291));
                     rectangles.add(new Rectangle(23, 271, 458, 124));
+                    alienShip.geometry = new CollisionGeometry(rectangles);
+
+                    return alienShip;
+                }
+            },
+
+            new LevelData(3) {
+                @Override
+                public AlienShip createAlienShip() {
+                    AlienShip alienShip = new AlienShip(Assets.alien3,
+                            new String[] { "88way.xml",
+                                "grow.xml", "[daiouzyou]_hibati_2_2_b.xml" },
+                            new Point[] { new Point(76, 224),
+                                          new Point(426, 224),
+                                          new Point(251, 126) },
+                            140);
+
+                    Array<Rectangle> rectangles = new Array<Rectangle>();
+                    rectangles.add(new Rectangle(167, 147, 164, 183));
+                    rectangles.add(new Rectangle(113, 195, 277, 160));
+                    rectangles.add(new Rectangle(57, 231, 392, 153));
+                    rectangles.add(new Rectangle(28, 258, 443, 149));
                     alienShip.geometry = new CollisionGeometry(rectangles);
 
                     return alienShip;

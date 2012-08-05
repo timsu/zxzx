@@ -63,15 +63,23 @@ public class AlienShip extends GameObject {
         for(int i = 0; i < bulletManagers.length; i++) {
             bulletManagers[i] = new BulletManager((int)(roomBounds.width),
                     (int)(roomBounds.height));
-            bulletManagers[i].loadBulletML(bulletPatterns[0]);
             bulletManagers[i].initGameObjects(this, world.getPlayer(), bulletSources[i].x,
                     bulletSources[i].y);
         }
     }
 
+    public void loadBulletPattern() {
+        int i = 0;
+        for(; i < Math.min(2, bulletManagers.length); i++)
+            bulletManagers[i].loadBulletML(bulletPatterns[bulletSwitchIndex]);
+
+        for(; i < bulletManagers.length; i++)
+            bulletManagers[i].loadBulletML(bulletPatterns[(bulletSwitchIndex + 1) % bulletPatterns.length]);
+    }
+
     //
 
-    private float bulletSwitchCounter = 0;
+    private float bulletSwitchCounter = 100;
     private int bulletSwitchIndex = 0;
 
     private float velocityChangeCounter = 0;
@@ -87,8 +95,7 @@ public class AlienShip extends GameObject {
 
         if (bulletSwitchCounter > 10) {
             bulletSwitchIndex = (bulletSwitchIndex + 1) % bulletPatterns.length;
-            for(int i = 0; i < bulletManagers.length; i++)
-                bulletManagers[i].loadBulletML(bulletPatterns[bulletSwitchIndex]);
+            loadBulletPattern();
             bulletSwitchCounter = 0;
         }
 
