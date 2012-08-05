@@ -62,7 +62,6 @@ public class World {
 
 	private final Pool<PlayerShot> shotPool;
 	private final Rectangle roomBounds;
-	private float playingTime;
 	private float nextFireTime;
 	private float now;
 	private Player player;

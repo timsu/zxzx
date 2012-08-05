@@ -13,6 +13,7 @@
 
 package com.todoroo.zxzx;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -20,6 +21,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -126,6 +129,7 @@ public class WorldView {
 		drawPlayersShots();
 		drawPlayer();
 		drawParticles();
+		drawBullets();
 		spriteBatch.end();
 	}
 
@@ -168,6 +172,33 @@ public class WorldView {
 		}
 		spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
+
+	private void drawBullets() {
+	    BulletManager manager = world.getBulletManager();
+
+	    manager.draw(renderer);
+	}
+
+	private class BulletRenderer implements AbstractBulletRenderer {
+
+	    private ShapeRenderer shapeRenderer = new ShapeRenderer(500);
+
+	    public void begin() {
+	        shapeRenderer.begin(ShapeType.Line);
+	    }
+
+        public void drawBullet(int x1, int y1, int x2, int y2) {
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.line(x1, y1, x2, y2);
+        }
+
+        public void end() {
+            shapeRenderer.end();
+        }
+
+	}
+
+	BulletRenderer renderer = new BulletRenderer();
 
 	/** Updates the state of the on-screen controls.
 	 *

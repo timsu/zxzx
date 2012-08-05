@@ -15,10 +15,9 @@
  */
 package com.todoroo.zxzx;
 
-public class StateData 
-{
-	// Control position
-	public float controlX = 0;
-	public float controlY = 0;
-	public boolean touched = false;
+
+
+public interface AbstractBulletRenderer {
+    public void drawBullet(int x1, int y1, int x2, int y2);
+
 }

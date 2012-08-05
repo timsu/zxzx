@@ -69,7 +69,6 @@ public class BulletManager
     private int pxPosition;
     private int pyPosition;
     private final int CLS_WIDTH = 32;
-    private final int PEN_COLOR = 0xffddbb;
 
     // BulletML handler.
     private IActionElmChoice[] topAction;
@@ -165,7 +164,7 @@ public class BulletManager
      *
      * @param The draw canvas.
      */
-    public final void movePen(IScreen screen)
+    public final void movePen(AbstractBulletRenderer screen)
     {
         int i;
         BulletImpl bl;
@@ -199,7 +198,7 @@ public class BulletManager
 	        yPosition = (((int)state.controlY)<<4)+8;
         }
 
-        drawLine(screen, pxPosition>>4, pyPosition>>4, xPosition>>4, yPosition>>4, PEN_COLOR);
+        screen.drawBullet(pxPosition>>4, pyPosition>>4, xPosition>>4, yPosition>>4);
 
         oxPos = xPosition;
         oyPos = yPosition;
@@ -319,7 +318,7 @@ public class BulletManager
 
                             if ((a1x <= x) && (x <= a2x) && (a1y <= y) && (y <= a2y) && (b1x <= x) && (x <= b2x) && (b1y <= y) && (y <= b2y))
                             {
-                                hitBullet();
+                                // hitBullet();
 
                                 return;
                             }
@@ -513,7 +512,7 @@ public class BulletManager
      *
      * @param The draw canvas
      */
-    private void drawBullets(IScreen screen)
+    private void drawBullets(AbstractBulletRenderer screen)
     {
         for (int i = BULLET_MAX - 1; i >= 0; i--)
         {
@@ -539,7 +538,7 @@ public class BulletManager
      *
      * @param canvas
      */
-    public void draw(IScreen screen)
+    public void draw(AbstractBulletRenderer screen)
     {
 	    drawBullets(screen);
 

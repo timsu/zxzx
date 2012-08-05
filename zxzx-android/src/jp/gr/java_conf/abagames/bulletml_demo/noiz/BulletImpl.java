@@ -13,6 +13,7 @@ import jp.gr.java_conf.abagames.util.DegUtil;
 import jp.gr.java_conf.abagames.util.SCTable;
 
 import com.todoroo.zxzx.BulletManager;
+import com.todoroo.zxzx.AbstractBulletRenderer;
 
 /**
  * Bullet implementation.
@@ -206,6 +207,11 @@ public class BulletImpl
 
             break;
         }
+    }
+
+    public void draw(AbstractBulletRenderer screen)
+    {
+        screen.drawBullet((x >> 4), (y >> 4), (px >> 4), (py >> 4));
     }
 
 }
