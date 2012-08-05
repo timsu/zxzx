@@ -21,8 +21,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -183,20 +181,16 @@ public class WorldView {
 
 	private class BulletRenderer implements AbstractBulletRenderer {
 
-	    private ShapeRenderer shapeRenderer = new ShapeRenderer(500);
-
 	    public void begin() {
-	        shapeRenderer.setProjectionMatrix(worldCam.combined);
-	        shapeRenderer.begin(ShapeType.Line);
+	        spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 	    }
 
         public void drawBullet(int x1, int y1, int x2, int y2) {
-            shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.line(x1, y1, x2, y2);
+            spriteBatch.draw(Assets.alienShot, x1 - 16, y1 - 16);
         }
 
         public void end() {
-            shapeRenderer.end();
+            spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         }
 
 	}

@@ -80,10 +80,12 @@ public class Assets {
 		playerFly1 = atlas.findRegion("PlayerAnim1");
 		playerFly2 = atlas.findRegion("PlayerAnim2");
 		playerFly3 = atlas.findRegion("PlayerAnim3");
-
 		playerLeft = atlas.findRegion("PlayerLeft");
 		playerRight = atlas.findRegion("PlayerRight");
+
 		playerShot = atlas.findRegion("PlayerShot");
+		alienShot = atlas.findRegion("AlienShotSmall");
+
 		pureWhiteTextureRegion = atlas.findRegion("8x8");
 	}
 
