@@ -38,8 +38,8 @@ public class Assets {
     private static final String TEXT_FONT = Config.asString("Global.textFont", "ocr_a.fnt");
 
     private static final float PLAYER_FRAME_DURATION = Config.asFloat("Player.frameDuration", 0.1f);
-    private static final float PLAYER_BORDER_WIDTH = Config.asFloat("Player.borderWidthPercent", 10.0f);
-    private static final float PLAYER_BORDER_HEIGHT = Config.asFloat("Player.borderHeightPercent", 25.0f);
+    private static final float PLAYER_BORDER_WIDTH = Config.asFloat("Player.borderWidthPercent", 12.5f);
+    private static final float PLAYER_BORDER_HEIGHT = Config.asFloat("Player.borderHeightPercent", 30.0f);
 
 	private static TextureAtlas atlas;
 
@@ -53,6 +53,7 @@ public class Assets {
 	public static TextureRegion alienShot;
 
 	public static Animation playerAnimation;
+	public static Animation playerDeathAnimation;
 
     public static BitmapFont scoreFont;
     public static BitmapFont textFont;
@@ -91,6 +92,14 @@ public class Assets {
 
 	private static void createAnimations () {
 		playerAnimation = new Animation(PLAYER_FRAME_DURATION, playerFly1, playerFly2, playerFly3);
+		playerDeathAnimation = new Animation(0.15f,
+		        atlas.findRegion("PlayerDeath1"),
+		        atlas.findRegion("PlayerDeath2"),
+		        atlas.findRegion("PlayerDeath3"),
+		        atlas.findRegion("PlayerDeath4"),
+		        atlas.findRegion("PlayerDeath5"),
+		        atlas.findRegion("PlayerDeath6"),
+		        new TextureRegion(playerFly1, 0, 0, 0, 0));
 	}
 
     private static void loadFonts () {

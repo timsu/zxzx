@@ -150,6 +150,9 @@ public class WorldView {
 		case Player.FLYING_RIGHT:
 		    draw(player, Assets.playerRight);
 			break;
+		case Player.DEATH:
+		    draw(player, Assets.playerDeathAnimation.getKeyFrame(player.stateTime, false));
+		    break;
 		default:
 		    draw(player, Assets.playerAnimation.getKeyFrame(player.stateTime, true));
 		    break;
@@ -207,7 +210,7 @@ public class WorldView {
 			if (world.isPaused()) {
 				presenter.resume();
 			}
-		} else if (Gdx.input.isTouched()) {
+		} else if (world.getState() == World.PLAYING && Gdx.input.isTouched()) {
 			worldCam.unproject(dragPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 			float dx = dragPoint.x - world.getPlayer().x - world.getPlayer().width / 2;
             float dy = dragPoint.y - (world.getPlayer().y - 60);

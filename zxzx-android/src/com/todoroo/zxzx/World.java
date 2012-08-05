@@ -64,7 +64,7 @@ public class World {
 	private final Pool<PlayerShot> shotPool;
 	private final Rectangle roomBounds;
 	private float nextFireTime;
-	private float now;
+	private float now, restartLevelTime = 0;
 	private Player player;
 	private Array<PlayerShot> playerShots;
 	private int state;
@@ -112,6 +112,9 @@ public class World {
 			case PLAYING:
 				updatePlaying(delta);
 				break;
+			case PLAYER_DEAD:
+                updatePlayerDead(delta);
+                break;
 			}
 		} else {
 			pausedTime += delta;
@@ -132,6 +135,15 @@ public class World {
         updateMobiles(delta);
         checkForCollisions();
         clipBounds();
+    }
+
+    private void updatePlayerDead (float delta) {
+        player.update(delta);
+        updateMobiles(delta);
+        checkForCollisions();
+        if (now >= restartLevelTime) {
+            reset();
+        }
     }
 
     private void updateResetting () {
@@ -165,6 +177,7 @@ public class World {
     private void placePlayer () {
         player.x = roomBounds.width / 2 - player.width / 2;
         player.y = player.height * 2;
+        player.inCollision = false;
 
         player.setState(Player.FLYING);
     }
@@ -195,7 +208,8 @@ public class World {
     };
 
     private void doPlayerHit() {
-        //
+        setState(PLAYER_DEAD);
+        restartLevelTime = now + 10;
     }
 
     // -------- collisions
@@ -210,6 +224,8 @@ public class World {
     }
 
     private void checkMobileMobileCollisions () {
+        bulletManager.collide(player);
+
         /*Colliders.collide(player, robots, gameObjectCollisionHandler);
         Colliders.collide(player, robotShots, gameObjectCollisionHandler);
         Colliders.collide(captain, player, captainGameObjectCollisionHandler);

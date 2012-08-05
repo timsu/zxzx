@@ -29,6 +29,8 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Rectangle;
+import com.todoroo.zxzx.general.GameObject;
 
 
 /**
@@ -337,5 +339,24 @@ public class BulletManager
 	{
 		return screenWidth;
 	}
+
+	private Rectangle rectangle = new Rectangle();
+
+    public void collide(GameObject go) {
+        for (int i = BULLET_MAX - 1; i >= 0; i--) {
+            if (bullet[i].x != BULLET_NOT_EXIST) {
+                rectangle.x = (bullet[i].x >> 4) - 3;
+                rectangle.y = (bullet[i].y >> 4) - 3;
+                rectangle.height = 6;
+                rectangle.width = 6;
+
+                if(go.intersects(rectangle)) {
+                    go.inCollision = true;
+                    break;
+                }
+            }
+        }
+
+    }
 
 }

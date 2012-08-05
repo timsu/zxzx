@@ -21,8 +21,9 @@ import com.todoroo.zxzx.general.GameObject;
 public class Player extends GameObject {
 
 	public static final int FLYING = INACTIVE + 1;
-	public static final int FLYING_LEFT = FLYING + 1;
-	public static final int FLYING_RIGHT = FLYING_LEFT + 1;
+	public static final int FLYING_LEFT = INACTIVE + 2;
+	public static final int FLYING_RIGHT = INACTIVE + 3;
+	public static final int DEATH = INACTIVE + 4;
 
 	private static final float SPEED = Config.asFloat("Player.accel", 40f);
 	private static final float DRAG = Config.asFloat("Player.drag", 1.05f);
@@ -55,13 +56,14 @@ public class Player extends GameObject {
 		x += vx;
 		y += vy;
 
-		if (vx > 7f && state == FLYING || vx > 4f && state == FLYING_RIGHT) {
+		if (inCollision)
+		    setState(DEATH);
+		else if (vx > 7f && state == FLYING || vx > 4f && state == FLYING_RIGHT)
 	        setState(FLYING_RIGHT);
-		} else if (vx < -7f && state == FLYING || vx < -4f && state == FLYING_LEFT) {
+		else if (vx < -7f && state == FLYING || vx < -4f && state == FLYING_LEFT)
 	        setState(FLYING_LEFT);
-		} else {
-		    setState(FLYING);
-		}
+		else
+		  setState(FLYING);
 	}
 
 	public void setController (float x, float y) {

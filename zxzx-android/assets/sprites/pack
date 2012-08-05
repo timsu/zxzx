@@ -66,3 +66,45 @@ AlienShotLarge
   orig: 32, 32
   offset: 0, 0
   index: -1
+PlayerDeath1
+  rotate: false
+  xy: 70, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+PlayerDeath2
+  rotate: false
+  xy: 103, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+PlayerDeath3
+  rotate: false
+  xy: 136, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+PlayerDeath4
+  rotate: false
+  xy: 169, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+PlayerDeath5
+  rotate: false
+  xy: 202, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+PlayerDeath6
+  rotate: false
+  xy: 235, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
