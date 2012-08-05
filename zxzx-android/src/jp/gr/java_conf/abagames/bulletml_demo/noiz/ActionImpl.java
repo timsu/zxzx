@@ -5,10 +5,26 @@
  */
 package jp.gr.java_conf.abagames.bulletml_demo.noiz;
 
-import com.todoroo.zxzx.BulletManager;
+import jp.gr.java_conf.abagames.bulletml.Accel;
+import jp.gr.java_conf.abagames.bulletml.Action;
+import jp.gr.java_conf.abagames.bulletml.ActionElm;
+import jp.gr.java_conf.abagames.bulletml.ChangeDirection;
+import jp.gr.java_conf.abagames.bulletml.ChangeSpeed;
+import jp.gr.java_conf.abagames.bulletml.Direction;
+import jp.gr.java_conf.abagames.bulletml.Fire;
+import jp.gr.java_conf.abagames.bulletml.FireElm;
+import jp.gr.java_conf.abagames.bulletml.Horizontal;
+import jp.gr.java_conf.abagames.bulletml.IActionChoice;
+import jp.gr.java_conf.abagames.bulletml.IActionElmChoice;
+import jp.gr.java_conf.abagames.bulletml.IFireElmChoice;
+import jp.gr.java_conf.abagames.bulletml.Repeat;
+import jp.gr.java_conf.abagames.bulletml.Speed;
+import jp.gr.java_conf.abagames.bulletml.Vanish;
+import jp.gr.java_conf.abagames.bulletml.Vertical;
+import jp.gr.java_conf.abagames.bulletml.Wait;
+import jp.gr.java_conf.abagames.bulletml_demo.BulletmlUtil;
 
-import jp.gr.java_conf.abagames.bulletml.*;
-import jp.gr.java_conf.abagames.bulletml_demo.*;
+import com.todoroo.zxzx.BulletManager;
 
 
 /**
@@ -189,27 +205,30 @@ public class ActionImpl
                 if (newAction != null)
                 {
                     Repeat rp = (Repeat) ac;
-                    newAction.set(BulletmlNoizUtil.getActionElm(rp.getActionElm()), bullet);
+                    Action action = BulletmlNoizUtil.getActionElm(rp.getActionElm());
+                    if(action != null) {
+                        newAction.set(action, bullet);
 
-                    float[] actPrms = BulletmlNoizUtil.getActionParams(rp.getActionElm(), prms);
+                        float[] actPrms = BulletmlNoizUtil.getActionParams(rp.getActionElm(), prms);
 
-                    if (actPrms == null)
-                    {
-                        newAction.setParams(prms);
+                        if (actPrms == null)
+                        {
+                            newAction.setParams(prms);
+                        }
+                        else
+                        {
+                            newAction.setParams(actPrms);
+                        }
+
+                        newAction.setRepeat(BulletmlUtil.getIntValue(rp.getTimes(), prms));
+                        newAction.setParent(this);
+                        newAction.setMoveStatus(mvdrCnt, mvDrc, isAim, mvspCnt, mvSpeed, acclCnt, mvMx, mvMy);
+                        newAction.setPrvFireStatus(prvFireDrc, prvFireSpeed);
+                        bullet.changeAction(this, newAction);
+                        newAction.move();
+
+                        break;
                     }
-                    else
-                    {
-                        newAction.setParams(actPrms);
-                    }
-
-                    newAction.setRepeat(BulletmlUtil.getIntValue(rp.getTimes(), prms));
-                    newAction.setParent(this);
-                    newAction.setMoveStatus(mvdrCnt, mvDrc, isAim, mvspCnt, mvSpeed, acclCnt, mvMx, mvMy);
-                    newAction.setPrvFireStatus(prvFireDrc, prvFireSpeed);
-                    bullet.changeAction(this, newAction);
-                    newAction.move();
-
-                    break;
                 }
             }
             else if (ac instanceof ActionElm)

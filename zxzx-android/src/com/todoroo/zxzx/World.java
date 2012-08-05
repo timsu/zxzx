@@ -82,7 +82,7 @@ public class World {
 	    notifier = new WorldNotifier();
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
-		level = 1;
+		level = 0;
 
 		shotPool = new Pool<PlayerShot>(MAX_PLAYER_SHOTS, MAX_PLAYER_SHOTS) {
 			@Override

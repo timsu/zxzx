@@ -30,7 +30,7 @@ public class LevelManager {
                     AlienShip alienShip = new AlienShip(Assets.alien1,
                             new String[] { "[Ikaruga]_r1_mdl.xml", "[Ikaruga]_drc2.xml" },
                             new Point[] { new Point(136, 200), new Point(376, 200) },
-                            50);
+                            60);
 
                     Array<Rectangle> rectangles = new Array<Rectangle>();
                     rectangles.add(new Rectangle(30, 150, 60, 144));
@@ -51,7 +51,7 @@ public class LevelManager {
                     AlienShip alienShip = new AlienShip(Assets.alien2,
                             new String[] { "[G_DARIUS]_homing_laser.xml", "[daiouzyou]_r1_boss_1.xml" },
                             new Point[] { new Point(71, 271), new Point(437, 271) },
-                            70);
+                            80);
 
                     Array<Rectangle> rectangles = new Array<Rectangle>();
                     rectangles.add(new Rectangle(184, 126, 137, 291));
