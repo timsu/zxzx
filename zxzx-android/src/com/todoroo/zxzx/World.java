@@ -88,7 +88,7 @@ public class World {
 			}
 		};
 
-		bulletManager = new BulletManager((int)roomBounds.width, (int)roomBounds.height);
+		bulletManager = new BulletManager((int)(roomBounds.width * 16), (int)(roomBounds.height * 16));
 	}
 
 	/** Resets the {@link World} to its starting state. */
@@ -151,11 +151,8 @@ public class World {
         placePlayer();
         createPlayerShots();
 
-        bulletManager.initBullets();
-
-        bulletManager.loadBulletML(Gdx.files.internal("bulletml/[Ikaruga]_r1_mdl.xml"));
-        System.err.println("loaded bulletml");
-        bulletManager.setHVStat(0);
+        bulletManager.initBullets(roomBounds.width * 16 / 2, roomBounds.height * 16 - 1000);
+        bulletManager.loadBulletML(Gdx.files.internal("bulletml/grow.xml"));
 
         setState(PLAYING);
     }

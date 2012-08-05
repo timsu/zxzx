@@ -12,8 +12,8 @@ import jp.gr.java_conf.abagames.bulletml.Speed;
 import jp.gr.java_conf.abagames.util.DegUtil;
 import jp.gr.java_conf.abagames.util.SCTable;
 
-import com.todoroo.zxzx.BulletManager;
 import com.todoroo.zxzx.AbstractBulletRenderer;
+import com.todoroo.zxzx.BulletManager;
 
 /**
  * Bullet implementation.
@@ -24,8 +24,8 @@ public class BulletImpl
 {
     public static final int NOT_EXIST = -9999;
 
-    private int SCREEN_WIDTH_16 = 0;
-    private int SCREEN_HEIGHT_16 = 0;
+    private final int SCREEN_WIDTH_16;
+    private final int SCREEN_HEIGHT_16;
 
     private final int ACTION_MAX = 8;
     private ActionImpl[] action = new ActionImpl[ACTION_MAX];
@@ -125,8 +125,6 @@ public class BulletImpl
 
     public float getAimDeg()
     {
-        //return (float)DegUtil.getDeg(gameManager.xp - x, gameManager.yp - y)
-        // * (float)Math.PI / 128;
         return ((float) DegUtil.getDeg(gameManager.xPosition - x, gameManager.yPosition - y) * 360) / SCTable.TABLE_SIZE;
     }
 
@@ -162,7 +160,6 @@ public class BulletImpl
 
         count++;
 
-        //int d = (int)(direction*SCTable.TABLE_SIZE/Math.PI/2);
         int d = (int) ((direction * SCTable.TABLE_SIZE) / 360);
         d &= (SCTable.TABLE_SIZE - 1);
 
@@ -187,25 +184,9 @@ public class BulletImpl
             py = y - (mvy << 2);
         }
 
-        switch (gameManager.hvStat)
+        if ((px < 0) || (px >= (SCREEN_WIDTH_16 + (SCREEN_WIDTH_16 >> 2))) || (py < 0) || (py >= SCREEN_HEIGHT_16))
         {
-        case 0:
-
-            if ((px < 0) || (px >= SCREEN_WIDTH_16) || (py < -(SCREEN_HEIGHT_16 >> 2)) || (py >= SCREEN_HEIGHT_16))
-            {
-                vanish();
-            }
-
-            break;
-
-        case 1:
-
-            if ((px < 0) || (px >= (SCREEN_WIDTH_16 + (SCREEN_WIDTH_16 >> 2))) || (py < 0) || (py >= SCREEN_HEIGHT_16))
-            {
-                vanish();
-            }
-
-            break;
+            vanish();
         }
     }
 
