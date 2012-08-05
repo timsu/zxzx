@@ -189,7 +189,7 @@ public class BulletImpl
             py = y - (mvy << 2);
         }
 
-        if ((px < 0) || (px >= (SCREEN_WIDTH_16 + (SCREEN_WIDTH_16 >> 2))) || (py < 0) || (py >= SCREEN_HEIGHT_16))
+        if ((px < 0) || (px >= SCREEN_WIDTH_16) || (py < 0) || (py >= SCREEN_HEIGHT_16))
         {
             vanish();
         }
