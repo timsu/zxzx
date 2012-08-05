@@ -69,6 +69,7 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 	@Override
 	public void hide () {
 		Gdx.input.setCatchBackKey(false);
+		world.pause();
 	}
 
 	/** Called by libgdx when this screen should render itself. It responds to a request to render by updating the controls,

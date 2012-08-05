@@ -18,6 +18,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
@@ -54,7 +56,6 @@ public class WorldView {
 	private final Presenter presenter;
 	private OrthographicCamera worldCam;
 	private BackgroundRenderer backgroundRenderer;
-	private GeometryRenderer geometryRenderer;
 	private Matrix4 cacheTransform;
 	private SpriteBatch spriteBatch;
 	private Vector3 touchPoint;
@@ -78,7 +79,6 @@ public class WorldView {
 		spriteBatch = new SpriteBatch();
 		spriteBatch.setProjectionMatrix(worldCam.combined);
 		backgroundRenderer = new BackgroundRenderer(worldCam);
-		geometryRenderer = new GeometryRenderer(worldCam);
 		cacheTransform = new Matrix4();
 		touchPoint = new Vector3();
 		dragPoint = new Vector3();
@@ -109,13 +109,29 @@ public class WorldView {
 
         case World.PLAYER_DEAD:
         case World.ALIEN_DEAD:
-
             drawBackground();
             drawMobiles();
         }
+
+        if(world.getState() == World.ALIEN_DEAD)
+            drawText("You win.");
+        else if(world.getState() == World.PLAYER_DEAD)
+            drawText("You died.");
+        else if(world.isPaused())
+            drawText("Paused");
 	}
 
-	private void drawBackground () {
+	private void drawText(CharSequence string) {
+	    BitmapFont font = Assets.textFont;
+	    spriteBatch.begin();
+        spriteBatch.setColor(Color.WHITE);
+        font.drawWrapped(spriteBatch, string, worldCam.viewportWidth * 0.1f,
+                worldCam.viewportHeight / 2, worldCam.viewportWidth * 0.8f,
+                HAlignment.CENTER);
+        spriteBatch.end();
+    }
+
+    private void drawBackground () {
 	    backgroundRenderer.render(spriteBatch);
 	}
 
@@ -146,6 +162,7 @@ public class WorldView {
                     0, worldCam.viewportHeight - 2, width, 2);
             spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	    }
+
     }
 
     private void drawPlayersShots () {
