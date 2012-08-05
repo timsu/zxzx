@@ -215,13 +215,8 @@ public class WorldView {
 			}
 		} else if (Gdx.input.isTouched()) {
 			worldCam.unproject(dragPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			float dx = dragPoint.x - world.getPlayer().x;
-            float dy = dragPoint.y - world.getPlayer().y;
-
-            if(Math.abs(dx) < 20)
-                dx = 0;
-            if(Math.abs(dy) < 20)
-                dy = 0;
+			float dx = dragPoint.x - world.getPlayer().x - world.getPlayer().width / 2;
+            float dy = dragPoint.y - (world.getPlayer().y - 60);
 
             joystick.set(dx, dy);
 			float len = joystick.len();

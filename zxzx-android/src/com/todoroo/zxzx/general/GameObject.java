@@ -1,11 +1,11 @@
 /*
  * Copyright 2011 Rod Hyde (rod@badlydrawngames.com)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
@@ -14,12 +14,10 @@
 package com.todoroo.zxzx.general;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.todoroo.zxzx.general.Colliders;
-import com.todoroo.zxzx.general.CollisionGeometry;
 
 /** All game objects are ultimately based on <code>GameObject</code>. Different behaviours are specified by overriding
  * {@link GameObject#update}.
- * 
+ *
  * @author Rod */
 public class GameObject {
 
@@ -78,12 +76,14 @@ public class GameObject {
 	/** Switches this game object into a new state and resets {@link stateTime}.
 	 * @param state the new state. */
 	public void setState (int state) {
+	    if(this.state == state)
+	        return;
 		this.state = state;
 		stateTime = 0.0f;
 	}
 
 	/** Returns true if this game object's bounds intersect with the given rectangle.
-	 * 
+	 *
 	 * @param r the rectangle to intersect.
 	 * @return true if the bounds intersect. */
 	public boolean boundsIntersect (Rectangle r) {
@@ -91,7 +91,7 @@ public class GameObject {
 	}
 
 	/** Returns true if this game object's bounds intersect with the given game object.
-	 * 
+	 *
 	 * @param go the other game object.
 	 * @return true if the bounds intersect. */
 	public boolean boundsIntersect (GameObject go) {
@@ -99,7 +99,7 @@ public class GameObject {
 	}
 
 	/** Returns true if this game object's collision geometry intersects with the given rectangle.
-	 * 
+	 *
 	 * @param r the rectangle to intersect.
 	 * @return true if the geometry intersects with the rectangle. */
 	public boolean geometryIntersects (Rectangle r) {
@@ -107,7 +107,7 @@ public class GameObject {
 	}
 
 	/** Returns true if this game object's collision geometry intersects with another game object's collision geometry.
-	 * 
+	 *
 	 * @param go the other game object.
 	 * @return true if the geometries intersect. */
 	public boolean geometryIntersects (GameObject go) {
@@ -116,7 +116,7 @@ public class GameObject {
 
 	/** Returns true if this game object is in collision with a rectangle. It first does a simple box test against this game
 	 * object's bounds, then, if that's true, tests its collision geometry against the rectangle.
-	 * 
+	 *
 	 * @param r the rectangle to intersect.
 	 * @return true if this game object intersects the rectangle. */
 	public boolean intersects (Rectangle r) {
@@ -138,7 +138,7 @@ public class GameObject {
 	}
 
 	/** Updates this game object. Typically you would override this to create interesting behaviour.
-	 * 
+	 *
 	 * @param delta time in seconds since the last update. */
 	public void update (float delta) {
 	}

@@ -37,7 +37,7 @@ public class Assets {
     private static final String SCORE_FONT = Config.asString("Global.scoreFont", "wellbutrin.fnt");
     private static final String TEXT_FONT = Config.asString("Global.textFont", "ocr_a.fnt");
 
-    private static final float PLAYER_FRAME_DURATION = Config.asFloat("Player.frameDuration", 0.2f);
+    private static final float PLAYER_FRAME_DURATION = Config.asFloat("Player.frameDuration", 0.1f);
     private static final float PLAYER_BORDER_WIDTH = Config.asFloat("Player.borderWidthPercent", 10.0f);
     private static final float PLAYER_BORDER_HEIGHT = Config.asFloat("Player.borderHeightPercent", 25.0f);
 
