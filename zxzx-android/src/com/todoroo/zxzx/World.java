@@ -230,6 +230,11 @@ public class World {
         restartLevelTime = now + 10;
     }
 
+    private void doAlienDied() {
+        setState(ALIEN_DEAD);
+        restartLevelTime = now + 20;
+    }
+
     // -------- collisions
 
     private void checkForCollisions () {
@@ -240,7 +245,7 @@ public class World {
             if(player.inCollision)
                 doPlayerHit();
             if(alienShip.getAlienHealthPercentage() <= 0)
-                setState(ALIEN_DEAD);
+                doAlienDied();
         }
     }
 
