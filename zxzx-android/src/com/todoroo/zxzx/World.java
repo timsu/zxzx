@@ -193,6 +193,8 @@ public class World {
     }
 
     private void placePlayer () {
+        player.x = roomBounds.width / 2 - player.width / 2;
+        player.y = player.height;
         player.inCollision = false;
 
         player.setState(Player.FLYING);
@@ -234,8 +236,11 @@ public class World {
         checkMobileMobileCollisions();
         removeMarkedMobiles();
 
-        if (state == PLAYING && player.inCollision) {
-            doPlayerHit();
+        if (state == PLAYING) {
+            if(player.inCollision)
+                doPlayerHit();
+            if(alienShip.getAlienHealthPercentage() <= 0)
+                setState(ALIEN_DEAD);
         }
     }
 
@@ -243,7 +248,9 @@ public class World {
         BulletManager[] bulletManagers = getBulletManagers();
         for(int i = 0; i < bulletManagers.length; i++)
             bulletManagers[i].collide(player);
+
         Colliders.collide(alienShip, playerShots, playerShotCollisionHandler);
+        Colliders.collide(player, alienShip, playerAlienCollisionHandler);
     }
 
     private void removeMarkedMobiles () {
@@ -260,12 +267,18 @@ public class World {
                 Math.min(roomBounds.height - 2 * alienShip.height / 3, alienShip.y));
     }
 
+    private ColliderHandler<Player, AlienShip> playerAlienCollisionHandler = new ColliderHandler<Player, AlienShip>() {
+        public void onCollision(Player t, AlienShip u) {
+            if(!t.inCollision)
+                u.hit(5);
+            t.inCollision = true;
+        }
+    };
+
     private ColliderHandler<AlienShip, PlayerShot> playerShotCollisionHandler = new ColliderHandler<AlienShip, PlayerShot>() {
 
         public void onCollision(AlienShip t, PlayerShot u) {
-            if(t.hit(1)) {
-                setState(ALIEN_DEAD);
-            }
+            t.hit(1);
             u.inCollision = true;
         }
 
