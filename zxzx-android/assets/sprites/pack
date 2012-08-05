@@ -108,3 +108,17 @@ PlayerDeath6
   orig: 32, 32
   offset: 0, 0
   index: -1
+Water1
+  rotate: false
+  xy: 268, 367
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Water2
+  rotate: false
+  xy: 301, 367
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

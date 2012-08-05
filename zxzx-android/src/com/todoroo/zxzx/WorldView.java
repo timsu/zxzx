@@ -19,7 +19,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -48,14 +47,12 @@ public class WorldView {
 
 	private static final float PARTICLE_SIZE = Config.asFloat("particle.size", 0.1875f);
 
-	private static final int SPRITE_CACHE_SIZE = 128;
-
 	private static final int MAX_PARTICLES = 256;
 
 	private final World world;
 	private final Presenter presenter;
 	private OrthographicCamera worldCam;
-	private SpriteCache spriteCache;
+	private BackgroundRenderer backgroundRenderer;
 	private Matrix4 cacheTransform;
 	private SpriteBatch spriteBatch;
 	private Vector3 touchPoint;
@@ -77,9 +74,8 @@ public class WorldView {
 		worldCam.update();
 
 		spriteBatch = new SpriteBatch();
-		spriteCache = new SpriteCache(SPRITE_CACHE_SIZE, true);
 		spriteBatch.setProjectionMatrix(worldCam.combined);
-		spriteCache.setProjectionMatrix(worldCam.combined);
+		backgroundRenderer = new BackgroundRenderer(worldCam);
 		cacheTransform = new Matrix4();
 		touchPoint = new Vector3();
 		dragPoint = new Vector3();
@@ -89,6 +85,7 @@ public class WorldView {
 	}
 
 	public void update (float delta) {
+	    backgroundRenderer.update(delta);
 		particleAdapter.update(delta);
 	}
 
@@ -104,7 +101,6 @@ public class WorldView {
         case World.PLAYING:
             if (world.getStateTime() == 0.0f) {
                 cacheTransform.idt();
-                spriteCache.setTransformMatrix(cacheTransform);
                 spriteBatch.setTransformMatrix(cacheTransform);
             }
 
@@ -115,9 +111,7 @@ public class WorldView {
 	}
 
 	private void drawBackground () {
-		spriteCache.begin();
-		// spriteCache.draw(cacheId);
-		spriteCache.end();
+	    backgroundRenderer.render(spriteBatch);
 	}
 
 	private void drawMobiles () {

@@ -51,6 +51,8 @@ public class Assets {
 	public static TextureRegion playerRight;
 	public static TextureRegion playerShot;
 	public static TextureRegion alienShot;
+	public static AtlasRegion water1;
+	public static AtlasRegion water2;
 
 	public static Animation playerAnimation;
 	public static Animation playerDeathAnimation;
@@ -83,6 +85,9 @@ public class Assets {
 		playerFly3 = atlas.findRegion("PlayerAnim3");
 		playerLeft = atlas.findRegion("PlayerLeft");
 		playerRight = atlas.findRegion("PlayerRight");
+
+		water1 = atlas.findRegion("Water1");
+		water2 = atlas.findRegion("Water2");
 
 		playerShot = atlas.findRegion("PlayerShot");
 		alienShot = atlas.findRegion("AlienShotSmall");
