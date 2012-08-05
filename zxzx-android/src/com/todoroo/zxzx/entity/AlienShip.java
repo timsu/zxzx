@@ -15,8 +15,11 @@ package com.todoroo.zxzx.entity;
 
 import java.util.Random;
 
+import android.graphics.Point;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.todoroo.zxzx.BulletManager;
 import com.todoroo.zxzx.general.GameObject;
 
@@ -27,24 +30,34 @@ public class AlienShip extends GameObject {
 
     private TextureRegion sprite;
 
-    private BulletManager bulletManager;
+    private BulletManager[] bulletManagers;
 
-    private String[] bulletPattern;
+    private String[] bulletPatterns;
 
     private static final float SPEED = 30.0f;
 
     private Random random = new Random();
 
-    public AlienShip(BulletManager bulletManager, TextureRegion sprite, String[] bulletPatternFiles) {
-        this.bulletManager = bulletManager;
+    public AlienShip(TextureRegion sprite, String[] bulletPatternFiles) {
         this.sprite = sprite;
 
-        bulletPattern = new String[bulletPatternFiles.length];
-        for(int i = 0; i < bulletPattern.length; i++)
-            bulletPattern[i] = Gdx.files.internal("bulletml/" + bulletPatternFiles[i]).readString();
-
-        bulletManager.loadBulletML(bulletPattern[0]);
+        bulletPatterns = new String[bulletPatternFiles.length];
+        for(int i = 0; i < bulletPatterns.length; i++)
+            bulletPatterns[i] = Gdx.files.internal("bulletml/" + bulletPatternFiles[i]).readString();
     }
+
+    public void initBulletManagers(Rectangle roomBounds) {
+        Point[] bulletSources = new Point[] { new Point(136, 200), new Point(376, 200) };
+
+        bulletManagers = new BulletManager[bulletSources.length];
+        for(int i = 0; i < bulletManagers.length; i++) {
+            bulletManagers[i] = new BulletManager((int)(roomBounds.width * 16),
+                    (int)(roomBounds.height * 16));
+            bulletManagers[i].loadBulletML(bulletPatterns[0]);
+            bulletManagers[i].initGameObject(this, bulletSources[i].x,
+                    bulletSources[i].y);
+        }
+    };
 
     //
 
@@ -63,10 +76,14 @@ public class AlienShip extends GameObject {
         velocityChangeCounter += delta;
 
         if (bulletSwitchCounter > 10) {
-            bulletSwitchIndex = (bulletSwitchIndex + 1) % bulletPattern.length;
-            bulletManager.loadBulletML(bulletPattern[bulletSwitchIndex]);
+            bulletSwitchIndex = (bulletSwitchIndex + 1) % bulletPatterns.length;
+            for(int i = 0; i < bulletManagers.length; i++)
+                bulletManagers[i].loadBulletML(bulletPatterns[bulletSwitchIndex]);
             bulletSwitchCounter = 0;
         }
+
+        for(int i = 0; i < bulletManagers.length; i++)
+            bulletManagers[i].update();
 
         if(state == SHOOTING) {
             return;
@@ -86,5 +103,9 @@ public class AlienShip extends GameObject {
 
     public TextureRegion getSprite() {
         return sprite;
-    };
+    }
+
+    public BulletManager[] getBulletManagers() {
+        return bulletManagers;
+    }
 }

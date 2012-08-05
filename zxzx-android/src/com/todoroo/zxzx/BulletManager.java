@@ -61,6 +61,7 @@ public class BulletManager
     private int shotCnt = 0;
 
     private GameObject gameObject;
+    private float offsetX, offsetY;
 
     /**
      * @param context
@@ -80,9 +81,11 @@ public class BulletManager
      * @param x
      *
      */
-    public void initGameObject(GameObject source)
+    public void initGameObject(GameObject source, float offsetX, float offsetY)
     {
         gameObject = source;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
     }
 
     public void initBullets() {
@@ -334,11 +337,11 @@ public class BulletManager
 	}
 
 	public float getX() {
-	    return (gameObject.x + gameObject.width / 2) * 16;
+	    return (gameObject.x + offsetX) * 16;
 	}
 
 	public float getY() {
-	    return (gameObject.y + 2 * gameObject.height / 3) * 16;
+	    return (gameObject.y + offsetY) * 16;
 	}
 
 	private Rectangle rectangle = new Rectangle();

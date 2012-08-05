@@ -73,7 +73,6 @@ public class World {
 	private float pausedTime;
 
 	private LevelManager levelManager;
-	private BulletManager bulletManager;
 
 	/** Constructs a new {@link World}. */
 	public World() {
@@ -89,8 +88,6 @@ public class World {
 		};
 
 		levelManager = new LevelManager();
-
-		bulletManager = new BulletManager((int)(roomBounds.width * 16), (int)(roomBounds.height * 16));
 	}
 
 	/** Resets the {@link World} to its starting state. */
@@ -125,7 +122,6 @@ public class World {
 
     private void updateMobiles (float delta) {
         update(playerShots, delta);
-        bulletManager.update();
     }
 
     private void updatePlaying (float delta) {
@@ -162,8 +158,6 @@ public class World {
 	// ------- position initialization
 
     private void populateLevel () {
-        bulletManager.clear();
-
         placePlayer();
         placeBoss();
         createPlayerShots();
@@ -172,12 +166,12 @@ public class World {
     }
 
     private void placeBoss() {
-        alienShip = levelManager.initAlienShip(level, bulletManager);
+        alienShip = levelManager.initAlienShip(level);
+
+        alienShip.initBulletManagers(roomBounds);
 
         alienShip.x = roomBounds.width / 2 - alienShip.width / 2;
         alienShip.y = roomBounds.height - alienShip.height;
-
-        bulletManager.initGameObject(alienShip);
     }
 
     private void placePlayer () {
@@ -257,8 +251,8 @@ public class World {
 
     // -------- getters / setters
 
-    public BulletManager getBulletManager() {
-        return bulletManager;
+    public BulletManager[] getBulletManagers() {
+        return alienShip.getBulletManagers();
     }
 
     public void pause () {

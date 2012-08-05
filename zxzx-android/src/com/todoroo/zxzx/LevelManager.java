@@ -34,10 +34,10 @@ public class LevelManager {
         };
     }
 
-    public AlienShip initAlienShip(int level, BulletManager bulletManager) {
+    public AlienShip initAlienShip(int level) {
         LevelData levelData = levels[level];
 
-        AlienShip alienShip = new AlienShip(bulletManager, levelData.alienTexture,
+        AlienShip alienShip = new AlienShip(levelData.alienTexture,
                 levelData.bulletSequences);
         alienShip.width = levelData.alienTexture.getRegionWidth();
         alienShip.height = levelData.alienTexture.getRegionHeight();

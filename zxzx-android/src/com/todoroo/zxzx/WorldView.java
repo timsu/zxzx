@@ -177,10 +177,11 @@ public class WorldView {
 	}
 
 	private void drawBullets() {
-	    BulletManager manager = world.getBulletManager();
+	    BulletManager[] manager = world.getBulletManagers();
 
 	    renderer.begin();
-	    manager.draw(renderer);
+	    for(int i = 0; i < manager.length; i++)
+	        manager[i].draw(renderer);
 	    renderer.end();
 	}
 
