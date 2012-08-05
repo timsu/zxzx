@@ -43,9 +43,9 @@ public class WorldView {
 	public static interface Presenter {
 		void setController (float x, float y);
 
-		void pause ();
+		void pauseGame ();
 
-		void resume ();
+		void resumeGame ();
 	}
 
 	private static final float PARTICLE_SIZE = Config.asFloat("particle.size", 0.1875f);
@@ -109,14 +109,17 @@ public class WorldView {
 
         case World.PLAYER_DEAD:
         case World.ALIEN_DEAD:
+        case World.VICTORY:
             drawBackground();
             drawMobiles();
         }
 
         if(world.getState() == World.ALIEN_DEAD)
-            drawText("You win.");
+            drawText("Stage cleared!");
         else if(world.getState() == World.PLAYER_DEAD)
             drawText("You died.");
+        else if(world.getState() == World.VICTORY)
+            drawText("YOU WIN. VICTORY!!!");
         else if(world.isPaused())
             drawText("Paused");
 	}
@@ -243,7 +246,7 @@ public class WorldView {
 		if (Gdx.input.justTouched()) {
 			worldCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 			if (world.isPaused()) {
-				presenter.resume();
+				presenter.resumeGame();
 			}
 		} else if (world.getState() == World.PLAYING && Gdx.input.isTouched()) {
 			worldCam.unproject(dragPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));

@@ -226,13 +226,14 @@ public class BulletManager
     }
 
     /**
+     * @return
      *
      */
-    private void addBullets()
+    private boolean addBullets()
     {
         if ((topBullet != null) && (topBullet.x != BulletImpl.NOT_EXIST) && !topBullet.isAllActionFinished())
         {
-            return;
+            return true;
         }
 
         gameObject.setState(AlienShip.MOVING);
@@ -241,7 +242,7 @@ public class BulletManager
 
         if (shotCnt > 0)
         {
-            return;
+            return false;
         }
 
         shotCnt = 60;
@@ -249,7 +250,7 @@ public class BulletManager
 
         if (topBullet == null)
         {
-            return;
+            return false;
         }
 
         gameObject.setState(AlienShip.SHOOTING);
@@ -259,6 +260,8 @@ public class BulletManager
         topBullet.iy = topBullet.y;
         topBullet.speed = 0;
         topBullet.direction = 0;
+
+        return true;
     }
 
     /**
@@ -297,15 +300,19 @@ public class BulletManager
      * Update visual items.
      *
      */
-    public void update()
+    public boolean update()
     {
+        boolean shot = false;
+
         if(topAction == null)
-            return;
+            return shot;
 
         if(gameObject.state != AlienShip.DEATH)
-            addBullets();
+            shot = addBullets();
 
         moveBullets();
+
+        return shot;
     }
 
     /**

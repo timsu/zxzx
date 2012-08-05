@@ -48,7 +48,7 @@ public class AlienShip extends GameObject {
         for(int i = 0; i < bulletPatterns.length; i++)
             bulletPatterns[i] = Gdx.files.internal("bulletml/" + bulletPatternFiles[i]).readString();
 
-        maxAlienHealth = alienHealth = 100;
+        maxAlienHealth = alienHealth = 50;
     }
 
     public void initBulletManagers(Rectangle roomBounds) {
@@ -104,6 +104,25 @@ public class AlienShip extends GameObject {
         float d = delta * SPEED;
         x += velocityX * d;
         y += velocityY * d;
+    }
+
+    /**
+     * @return true if new bullets were shot
+     */
+    public boolean updateBulletManagers() {
+        boolean shot = false;
+        for(BulletManager bm : bulletManagers)
+            shot = bm.update() || shot;
+        return shot;
+    }
+
+    /**
+     * Check if any of our bullets hit the player
+     * @param player
+     */
+    public void checkBulletCollision(GameObject player) {
+        for(int i = 0; i < bulletManagers.length; i++)
+            bulletManagers[i].collide(player);
     }
 
     public TextureRegion getSprite() {

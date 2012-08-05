@@ -59,6 +59,7 @@ public class World {
 	public static final int PLAYING = 2;
 	public static final int PLAYER_DEAD = 3;
 	public static final int ALIEN_DEAD = 4;
+	public static final int VICTORY = 5;
 
 	private final Pool<PlayerShot> shotPool;
 	private final Rectangle roomBounds;
@@ -74,9 +75,11 @@ public class World {
 	private float pausedTime;
 
 	private LevelManager levelManager;
+	private WorldNotifier notifier;
 
 	/** Constructs a new {@link World}. */
 	public World() {
+	    notifier = new WorldNotifier();
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
 		level = 0;
@@ -118,6 +121,8 @@ public class World {
 			case ALIEN_DEAD:
                 updateAlienDead(delta);
                 break;
+			case VICTORY:
+			    break;
 			}
 		} else {
 			pausedTime += delta;
@@ -126,10 +131,8 @@ public class World {
 
     private void updateMobiles (float delta) {
         update(playerShots, delta);
-
-        BulletManager[] bulletManagers = getBulletManagers();
-        for(int i = 0; i < bulletManagers.length; i++)
-            bulletManagers[i].update();
+        if(alienShip.updateBulletManagers())
+            notifier.onAlienFired();
     }
 
     private void updatePlaying (float delta) {
@@ -161,9 +164,20 @@ public class World {
 
         updateMobiles(delta);
         clipBounds();
+
+        if (now >= restartLevelTime) {
+            level++;
+            if(levelManager.wonTheGame(level))
+                setState(VICTORY);
+            else {
+                notifier.onLevelChange(level);
+                reset();
+            }
+        }
     }
 
     private void updateResetting () {
+        notifier.onWorldReset();
         populateLevel();
     }
 
@@ -198,6 +212,7 @@ public class World {
         player.inCollision = false;
 
         player.setState(Player.FLYING);
+        notifier.onPlayerSpawned();
     }
 
 
@@ -216,6 +231,7 @@ public class World {
             shot.fire(x, y, dx, dy);
             playerShots.add(shot);
             nextFireTime = now + FIRING_INTERVAL;
+            notifier.onPlayerFired();
         }
     }
 
@@ -228,11 +244,13 @@ public class World {
     private void doPlayerHit() {
         setState(PLAYER_DEAD);
         restartLevelTime = now + 10;
+        notifier.onPlayerHit();
     }
 
     private void doAlienDied() {
         setState(ALIEN_DEAD);
         restartLevelTime = now + 20;
+        notifier.onAlienDestroyed();
     }
 
     // -------- collisions
@@ -250,9 +268,7 @@ public class World {
     }
 
     private void checkMobileMobileCollisions () {
-        BulletManager[] bulletManagers = getBulletManagers();
-        for(int i = 0; i < bulletManagers.length; i++)
-            bulletManagers[i].collide(player);
+        alienShip.checkBulletCollision(player);
 
         Colliders.collide(alienShip, playerShots, playerShotCollisionHandler);
         Colliders.collide(player, alienShip, playerAlienCollisionHandler);
@@ -274,8 +290,10 @@ public class World {
 
     private ColliderHandler<Player, AlienShip> playerAlienCollisionHandler = new ColliderHandler<Player, AlienShip>() {
         public void onCollision(Player t, AlienShip u) {
-            if(!t.inCollision)
+            if(!t.inCollision) {
+                notifier.onAlienHit();
                 u.hit(5);
+            }
             t.inCollision = true;
         }
     };
@@ -285,11 +303,19 @@ public class World {
         public void onCollision(AlienShip t, PlayerShot u) {
             t.hit(1);
             u.inCollision = true;
+            notifier.onAlienHit();
         }
 
     };
 
     // -------- getters / setters
+
+    /** Adds another listener to the {@link World}.
+     *
+     * @param listener the listener. */
+    public void addWorldListener (WorldListener listener) {
+        notifier.addListener(listener);
+    }
 
     public BulletManager[] getBulletManagers() {
         return alienShip.getBulletManagers();

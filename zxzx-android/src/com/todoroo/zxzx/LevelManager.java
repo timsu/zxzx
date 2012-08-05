@@ -53,4 +53,8 @@ public class LevelManager {
         return alienShip;
     }
 
+    public boolean wonTheGame(int level) {
+        return level >= levels.length;
+    }
+
 }

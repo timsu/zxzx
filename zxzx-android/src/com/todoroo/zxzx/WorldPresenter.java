@@ -33,6 +33,7 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 
 	private final World world;
 	private final WorldView worldView;
+	private final SoundManager soundManager;
 
 	private int score;
 	private boolean isDead;
@@ -45,6 +46,8 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		super(game);
 		world = new World();
 		worldView = new WorldView(world, this);
+		soundManager = new SoundManager();
+		world.addWorldListener(soundManager);
 	}
 
 	@Override
@@ -52,24 +55,23 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		Gdx.input.setCatchBackKey(true);
 		wasBackPressed = false;
 		world.reset();
-		world.resume();
+		resumeGame();
 	}
 
 	@Override
 	public void pause () {
-		world.pause();
+		pauseGame();
 	}
 
 	@Override
 	public void resume () {
 		Gdx.input.setCatchBackKey(true);
-		world.resume();
+		pauseGame();
 	}
 
 	@Override
 	public void hide () {
 		Gdx.input.setCatchBackKey(false);
-		world.pause();
 	}
 
 	/** Called by libgdx when this screen should render itself. It responds to a request to render by updating the controls,
@@ -88,6 +90,7 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		world.update(delta);
 		if (!world.isPaused()) {
 			worldView.update(delta);
+			soundManager.update(delta);
 		}
 
 		// Clear the screen and draw the views.
@@ -127,5 +130,13 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 
 	public boolean isDead() {
         return isDead;
+    }
+
+    public void pauseGame() {
+        world.pause();
+    }
+
+    public void resumeGame() {
+        world.resume();
     }
 }

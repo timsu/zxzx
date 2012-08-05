@@ -23,4 +23,13 @@ public interface WorldListener {
 	public void onPlayerSpawned ();
 
 	public void onWorldReset ();
+
+	public void onAlienFired ();
+
+	public void onAlienHit ();
+
+	public void onAlienDestroyed ();
+
+    public void onLevelChange (int newLevel);
+
 }

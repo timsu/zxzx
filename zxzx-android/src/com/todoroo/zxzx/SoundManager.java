@@ -13,39 +13,22 @@
 
 package com.todoroo.zxzx;
 
-import com.badlogic.gdx.graphics.Color;
-import com.todoroo.zxzx.entity.Player;
-import com.todoroo.zxzx.general.ParticleManager;
 
-class ParticleAdapter implements WorldListener {
+public class SoundManager implements WorldListener {
 
-	final int PARTICLES = 32;
-
-	final private World world;
-	final private ParticleManager particleManager;
-
-	public ParticleAdapter (World world, ParticleManager particleManager) {
-		this.world = world;
-		this.particleManager = particleManager;
-	}
-
-	public void update (float delta) {
-		particleManager.update(delta);
-	}
-
-
-	public void onEnteredRoom (float time, int robots) {
-		particleManager.clear();
-	}
-
-    public void onPlayerHit() {
-		Player player = world.getPlayer();
-		float x = player.x + player.width / 2;
-		float y = player.y + player.height / 2;
-		particleManager.add(x, y, 2 * PARTICLES, Color.WHITE);
-	}
+	private float now = 0;
+	private float lastAlienFireTime = 0;
+	private float lastAlienHitTime = 0;
+	private float lastPlayerHitTime = 0;
 
     public void onPlayerFired() {
+    }
+
+    public void onPlayerHit() {
+        if (lastPlayerHitTime != now) {
+            Assets.playSound(Assets.explosion1);
+            lastPlayerHitTime = now;
+        }
     }
 
     public void onPlayerSpawned() {
@@ -55,15 +38,28 @@ class ParticleAdapter implements WorldListener {
     }
 
     public void onAlienFired() {
+        if (now - lastAlienFireTime > 0.1) {
+            Assets.shot.play(0.4f);
+            lastAlienFireTime = now;
+        }
     }
 
     public void onAlienHit() {
+        if (lastAlienHitTime != now) {
+            Assets.playSound(Assets.damage);
+            lastAlienHitTime = now;
+        }
     }
 
     public void onAlienDestroyed() {
+        Assets.playSound(Assets.destroyed);
     }
 
     public void onLevelChange(int newLevel) {
+    }
+
+    public void update (float delta) {
+        now += delta;
     }
 
 }

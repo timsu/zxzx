@@ -10,12 +10,9 @@ public class GeometryRenderer {
 
     private ShapeRenderer shapeRenderer;
 
-    private OrthographicCamera camera;
-
     public GeometryRenderer(OrthographicCamera camera) {
         shapeRenderer = new ShapeRenderer(500);
         shapeRenderer.setProjectionMatrix(camera.combined);
-        this.camera = camera;
     }
 
     public void render(GameObject go) {

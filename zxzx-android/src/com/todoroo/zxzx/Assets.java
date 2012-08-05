@@ -60,6 +60,13 @@ public class Assets {
     public static BitmapFont textFont;
     public static BitmapFont flyupFont;
 
+    public static Sound damage;
+    public static Sound destroyed;
+    public static Sound explosion1;
+    public static Sound explosion2;
+    public static Sound grz;
+    public static Sound shot;
+
 	public static float playerWidth;
 	public static float playerHeight;
 	public static float playerShotWidth;
@@ -123,12 +130,17 @@ public class Assets {
         flyupFont.setScale(1.0f);
     }
 
-	private static void loadSounds () {
-	    //
-	}
+    private static void loadSounds() {
+        damage = loadSound("damage.wav");
+        destroyed = loadSound("destroyed.wav");
+        explosion1 = loadSound("explosion1.wav");
+        explosion2 = loadSound("explosion2.wav");
+        grz = loadSound("grz.wav");
+        shot = loadSound("shot.wav");
+    }
 
 	public static Sound[] loadSounds (String dir) {
-		FileHandle dh = Gdx.files.internal("data/sounds/" + dir);
+		FileHandle dh = Gdx.files.internal("sounds/" + dir);
 		FileHandle[] fhs = dh.list();
 		List<Sound> sounds = new ArrayList<Sound>();
 		for (int i = 0; i < fhs.length; i++) {
@@ -142,7 +154,7 @@ public class Assets {
 	}
 
 	private static Sound loadSound (String filename) {
-		return Gdx.audio.newSound(Gdx.files.internal("data/sounds/" + filename));
+		return Gdx.audio.newSound(Gdx.files.internal("sounds/" + filename));
 	}
 
 	private static void initialiseGeometries () {
@@ -153,7 +165,7 @@ public class Assets {
 
 		// Configure player collision geometry.
 		Array<Rectangle> playerRectangles = new Array<Rectangle>();
-		playerRectangles.add(new Rectangle(4, 36, 57, 12));
+		playerRectangles.add(new Rectangle(8, 36, 49, 12));
 		playerRectangles.add(new Rectangle(19, 13, 27, 40));
 		playerRectangles.add(new Rectangle(15, 14, 35, 7));
 		playerGeometry = new CollisionGeometry(playerRectangles);
