@@ -24,7 +24,7 @@ public class Player extends GameObject {
 	public static final int FLYING_LEFT = FLYING + 1;
 	public static final int FLYING_RIGHT = FLYING_LEFT + 1;
 
-	private static final float SPEED = Config.asFloat("Player.accel", 60f);
+	private static final float SPEED = Config.asFloat("Player.accel", 40f);
 	private static final float DRAG = Config.asFloat("Player.drag", 0.95f);
 
 	private float ax = 0, ay = 0, vx = 0, vy = 0;

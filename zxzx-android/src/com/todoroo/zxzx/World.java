@@ -50,8 +50,9 @@ public class World {
 	public static final float WALL_WIDTH = 6.0f;
 	public static final float OUTER_WALL_ADJUST = WALL_HEIGHT;
 
-	private static final int MAX_PLAYER_SHOTS = Config.asInt("Player.maxShots", 4);
-	private static final float FIRING_INTERVAL = Config.asFloat("Player.firingInterval", 1f);
+	private static final int MAX_PLAYER_SHOTS = Config.asInt("Player.maxShots", 10);
+	private static final float FIRING_INTERVAL = Config.asFloat("Player.firingInterval", 0.2f);
+	private static final float SHOT_SPEED = Config.asFloat("Player.shotSpeed", 20f);
 
 	// Game states.
 	public static final int RESETTING = 1;
@@ -118,6 +119,10 @@ public class World {
 
     private void updatePlaying (float delta) {
         player.update(delta);
+
+        if (now >= nextFireTime)
+            addPlayerShot(0, SHOT_SPEED);
+
         updateMobiles(delta);
         checkForCollisions();
         clipBounds();
@@ -161,15 +166,6 @@ public class World {
 
 	// ------- shot mechanics
 
-    public final FireCommand firePlayerShot = new FireCommand() {
-        public void fire (GameObject firer, float dx, float dy) {
-            if (now >= nextFireTime) {
-                addPlayerShot(dx, dy);
-                nextFireTime = now + FIRING_INTERVAL;
-            }
-        }
-    };
-
     private void addPlayerShot (float dx, float dy) {
         if (state == PLAYING && playerShots.size < MAX_PLAYER_SHOTS) {
             PlayerShot shot = shotPool.obtain();
@@ -178,6 +174,7 @@ public class World {
             float y = player.y + player.height / 2 - shot.height / 2;
             shot.fire(x, y, dx, dy);
             playerShots.add(shot);
+            nextFireTime = now + FIRING_INTERVAL;
         }
     }
 

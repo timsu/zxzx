@@ -51,8 +51,6 @@ public class WorldView {
 
 	private static final int MAX_PARTICLES = 256;
 
-    private static final float JOYSTICK_DISTANCE_MULTIPLIER = 0.2f;
-
 	private final World world;
 	private final Presenter presenter;
 	private OrthographicCamera worldCam;
@@ -183,9 +181,15 @@ public class WorldView {
 			}
 		} else if (Gdx.input.isTouched()) {
 			worldCam.unproject(dragPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			float dx = dragPoint.x - touchPoint.x;
-            float dy = dragPoint.y - touchPoint.y;
-            joystick.set(dx, dy).mul(JOYSTICK_DISTANCE_MULTIPLIER);
+			float dx = dragPoint.x - world.getPlayer().x;
+            float dy = dragPoint.y - world.getPlayer().y;
+
+            if(Math.abs(dx) < 20)
+                dx = 0;
+            if(Math.abs(dy) < 20)
+                dy = 0;
+
+            joystick.set(dx, dy);
 			float len = joystick.len();
 			if (len > 1) {
 				joystick.nor();
