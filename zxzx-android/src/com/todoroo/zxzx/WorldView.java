@@ -114,9 +114,10 @@ public class WorldView {
             drawMobiles();
         }
 
-        if(world.getState() == World.ALIEN_DEAD)
-            drawText("Stage cleared!");
-        else if(world.getState() == World.PLAYER_DEAD)
+        if(world.getState() == World.ALIEN_DEAD) {
+            String cleared = String.format("Stage cleared in %.02f.", world.getLevelTime());
+            drawText(cleared);
+        } else if(world.getState() == World.PLAYER_DEAD)
             drawText("You died.");
         else if(world.getState() == World.VICTORY)
             drawText("YOU WIN. VICTORY!!!");

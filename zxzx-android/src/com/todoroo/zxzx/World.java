@@ -71,6 +71,7 @@ public class World {
 	private int state;
 	private int level;
 	private float stateTime;
+	private float levelTime;
 	private boolean isPaused;
 	private float pausedTime;
 
@@ -177,6 +178,7 @@ public class World {
     }
 
     private void updateResetting () {
+        levelTime = 0;
         notifier.onWorldReset();
         populateLevel();
     }
@@ -349,6 +351,10 @@ public class World {
 
     public float getStateTime () {
         return stateTime;
+    }
+
+    public float getLevelTime() {
+        return levelTime;
     }
 
     public Player getPlayer () {
