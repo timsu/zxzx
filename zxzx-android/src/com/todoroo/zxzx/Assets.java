@@ -52,6 +52,7 @@ public class Assets {
 	public static TextureRegion water1;
 	public static TextureRegion water2;
 	public static TextureRegion alien1;
+	public static TextureRegion alien2;
 
 	public static Animation playerAnimation;
 	public static Animation playerDeathAnimation;
@@ -103,6 +104,7 @@ public class Assets {
 
 		Texture enemies = new Texture(Gdx.files.internal("sprites/enemies.png"));
 		alien1 = new TextureRegion(enemies, 5, 5, 500, 500);
+		alien2 = new TextureRegion(enemies, 518, 5, 500, 500);
 
 		System.err.println("loaded textures");
 	}
