@@ -111,6 +111,8 @@ public class BulletImpl
 
     public void set(Bullet bullet, int x, int y, int ci)
     {
+        if(bullet == null)
+            return;
         directionElement = bullet.getDirection();
         speedElement = bullet.getSpeed();
 

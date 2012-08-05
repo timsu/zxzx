@@ -19,6 +19,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -51,8 +52,9 @@ public class Assets {
 	public static TextureRegion playerRight;
 	public static TextureRegion playerShot;
 	public static TextureRegion alienShot;
-	public static AtlasRegion water1;
-	public static AtlasRegion water2;
+	public static TextureRegion water1;
+	public static TextureRegion water2;
+	public static TextureRegion alien1;
 
 	public static Animation playerAnimation;
 	public static Animation playerDeathAnimation;
@@ -93,6 +95,11 @@ public class Assets {
 		alienShot = atlas.findRegion("AlienShotSmall");
 
 		pureWhiteTextureRegion = atlas.findRegion("8x8");
+
+		Texture enemies = new Texture(Gdx.files.internal("sprites/enemies.png"));
+		alien1 = new TextureRegion(enemies, 20, 90, 480, 332);
+
+		System.err.println("loaded textures");
 	}
 
 	private static void createAnimations () {

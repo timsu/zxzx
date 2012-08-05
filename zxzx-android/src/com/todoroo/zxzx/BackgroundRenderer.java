@@ -15,7 +15,7 @@ public class BackgroundRenderer {
     private OrthographicCamera camera;
 
     private static final float BG_SCROLL_VELOCITY = Config.asFloat("Background.velocity", 80f);
-    private static final int BG_WAVE_COUNT = Config.asInt("Background.waves", 50);
+    private static final int BG_WAVE_COUNT = Config.asInt("Background.waves", 80);
 
     private float[] waveX = new float[BG_WAVE_COUNT];
     private float[] waveY = new float[BG_WAVE_COUNT];

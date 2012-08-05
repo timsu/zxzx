@@ -61,10 +61,6 @@ public class BulletManager
     public int xPosition;
     public int yPosition;
 
-    private int pxPosition;
-    private int pyPosition;
-    private final int CLS_WIDTH = 32;
-
     // BulletML handler.
     private IActionElmChoice[] topAction;
     private BulletImpl topBullet;
@@ -153,8 +149,6 @@ public class BulletManager
     {
         xPosition = (int)state.controlX;
         yPosition = (int)state.controlY;
-        pxPosition = xPosition + 1;
-        pyPosition = yPosition;
     }
 
     /**

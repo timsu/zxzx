@@ -13,9 +13,6 @@
 
 package com.todoroo.zxzx;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -66,6 +63,7 @@ public class World {
 	private float nextFireTime;
 	private float now, restartLevelTime = 0;
 	private Player player;
+	private AlienShip alienShip;
 	private Array<PlayerShot> playerShots;
 	private int state;
 	private int level;
@@ -73,13 +71,14 @@ public class World {
 	private boolean isPaused;
 	private float pausedTime;
 
+	private LevelManager levelManager;
 	private BulletManager bulletManager;
 
 	/** Constructs a new {@link World}. */
 	public World() {
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
-		level = 1;
+		level = 0;
 
 		shotPool = new Pool<PlayerShot>(MAX_PLAYER_SHOTS, MAX_PLAYER_SHOTS) {
 			@Override
@@ -87,6 +86,8 @@ public class World {
 				return new PlayerShot();
 			}
 		};
+
+		levelManager = new LevelManager();
 
 		bulletManager = new BulletManager((int)(roomBounds.width * 16), (int)(roomBounds.height * 16));
 		bulletManager.initBullets(roomBounds.width * 16 / 2, roomBounds.height * 16 - 1000);
@@ -129,6 +130,7 @@ public class World {
 
     private void updatePlaying (float delta) {
         player.update(delta);
+        alienShip.update(delta);
 
         if (now >= nextFireTime)
             addPlayerShot(0, SHOT_SPEED);
@@ -160,24 +162,23 @@ public class World {
 	// ------- position initialization
 
     private void populateLevel () {
-        setRandomSeedFromLevel();
         bulletManager.clear();
 
         placePlayer();
+        placeBoss();
         createPlayerShots();
 
-        bulletManager.loadBulletML(Gdx.files.internal("bulletml/grow.xml"));
         setState(PLAYING);
     }
 
-    private void setRandomSeedFromLevel () {
-        long seed = level;
-        random.setSeed(seed);
+    private void placeBoss() {
+        alienShip = levelManager.initAlienShip(level, bulletManager);
+
+        alienShip.x = roomBounds.width / 2 - alienShip.width / 2;
+        alienShip.y = roomBounds.height;
     }
 
     private void placePlayer () {
-        player.x = roomBounds.width / 2 - player.width / 2;
-        player.y = player.height * 2;
         player.inCollision = false;
 
         player.setState(Player.FLYING);
@@ -225,7 +226,7 @@ public class World {
     }
 
     private void checkMobileMobileCollisions () {
-        bulletManager.collide(player);
+        // bulletManager.collide(player);
 
         /*Colliders.collide(player, robots, gameObjectCollisionHandler);
         Colliders.collide(player, robotShots, gameObjectCollisionHandler);
@@ -248,6 +249,10 @@ public class World {
     private void clipBounds () {
         player.x = Math.max(0, Math.min(roomBounds.width - player.width, player.x));
         player.y = Math.max(0, Math.min(roomBounds.height - player.height, player.y));
+
+        alienShip.x = Math.max(0, Math.min(roomBounds.width - alienShip.width, alienShip.x));
+        alienShip.y = Math.max(roomBounds.height - alienShip.height,
+                Math.min(roomBounds.height - alienShip.height, alienShip.y));
     }
 
     // -------- getters / setters
@@ -292,6 +297,10 @@ public class World {
 
     public Array<PlayerShot> getPlayerShots () {
         return playerShots;
+    }
+
+    public AlienShip getAlienShip() {
+        return alienShip;
     }
 
 }

@@ -13,9 +13,71 @@
 
 package com.todoroo.zxzx.entity;
 
+import java.util.Random;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.todoroo.zxzx.BulletManager;
 import com.todoroo.zxzx.general.GameObject;
 
 public class AlienShip extends GameObject {
 
+    private TextureRegion sprite;
 
+    private BulletManager bulletManager;
+
+    private String[] bulletPattern;
+
+    private static final float SPEED = 50.0f;
+
+    private Random random = new Random();
+
+    public AlienShip(BulletManager bulletManager, TextureRegion sprite, String[] bulletPattern) {
+        this.bulletManager = bulletManager;
+        this.sprite = sprite;
+        this.bulletPattern = bulletPattern;
+
+        bulletManager.loadBulletML(Gdx.files.internal("bulletml/" + bulletPattern[0]));
+    }
+
+    //
+
+    private float bulletSwitchCounter = 0;
+    private int bulletSwitchIndex = 0;
+
+    private float velocityChangeCounter = 0;
+    private float velocityChangeTarget = 0;
+    private float velocityX = 0, velocityY = 0;
+
+    @Override
+    public void update(float delta) {
+
+        bulletSwitchCounter += delta;
+        velocityChangeCounter += delta;
+
+        if (bulletSwitchCounter > 10) {
+            bulletSwitchIndex = (bulletSwitchIndex + 1) % bulletPattern.length;
+            bulletManager.loadBulletML(Gdx.files.internal("bulletml/" +
+                    bulletPattern[bulletSwitchIndex]));
+            bulletSwitchCounter = 0;
+        }
+
+        if (velocityChangeCounter > velocityChangeTarget) {
+            velocityChangeCounter = 0;
+            velocityChangeTarget = 3 + 3 * random.nextFloat();
+            velocityX = (3 + 3 * random.nextFloat()) * -Math.signum(velocityX);
+            velocityY = -3 + 6 * random.nextFloat();
+        }
+
+        float d = delta * SPEED;
+        x += velocityX * d;
+        y += velocityY * d;
+
+        bulletManager.xPosition = (int) this.x;
+        bulletManager.yPosition = (int) this.y;
+    }
+
+    public TextureRegion getSprite() {
+        return sprite;
+    };
 }

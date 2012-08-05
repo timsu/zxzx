@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.todoroo.zxzx.entity.AlienShip;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
 import com.todoroo.zxzx.general.Config;
@@ -120,12 +121,19 @@ public class WorldView {
 		spriteBatch.setColor(Color.WHITE);
 		drawPlayersShots();
 		drawPlayer();
+		drawBoss();
 		drawParticles();
 		drawBullets();
 		spriteBatch.end();
 	}
 
-	private void drawPlayersShots () {
+	private void drawBoss() {
+	    AlienShip boss = world.getAlienShip();
+	    if(boss != null && boss.getSprite() != null)
+	        draw(boss, boss.getSprite());
+    }
+
+    private void drawPlayersShots () {
 	    if(world.getPlayerShots() == null)
 	        return;
 
