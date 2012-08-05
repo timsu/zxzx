@@ -82,7 +82,7 @@ public class World {
 	    notifier = new WorldNotifier();
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
-		level = 0;
+		level = 1;
 
 		shotPool = new Pool<PlayerShot>(MAX_PLAYER_SHOTS, MAX_PLAYER_SHOTS) {
 			@Override
@@ -200,7 +200,7 @@ public class World {
     private void placeBoss() {
         alienShip = levelManager.initAlienShip(level);
 
-        alienShip.initBulletManagers(roomBounds);
+        alienShip.initBulletManagers(this, roomBounds);
 
         alienShip.x = roomBounds.width / 2 - alienShip.width / 2;
         alienShip.y = roomBounds.height - alienShip.height;

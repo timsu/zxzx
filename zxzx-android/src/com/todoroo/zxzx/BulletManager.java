@@ -60,7 +60,8 @@ public class BulletManager
     private BulletImpl topBullet;
     private int shotCnt = 0;
 
-    private GameObject gameObject;
+    private AlienShip ship;
+    private GameObject player;
     private float offsetX, offsetY;
 
     /**
@@ -81,9 +82,10 @@ public class BulletManager
      * @param x
      *
      */
-    public void initGameObject(GameObject source, float offsetX, float offsetY)
+    public void initGameObjects(AlienShip ship, GameObject player, float offsetX, float offsetY)
     {
-        gameObject = source;
+        this.ship = ship;
+        this.player = player;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }
@@ -236,7 +238,7 @@ public class BulletManager
             return true;
         }
 
-        gameObject.setState(AlienShip.MOVING);
+        ship.setState(AlienShip.MOVING);
 
         shotCnt--;
 
@@ -253,9 +255,9 @@ public class BulletManager
             return false;
         }
 
-        gameObject.setState(AlienShip.SHOOTING);
+        ship.setState(AlienShip.SHOOTING);
 
-        topBullet.set(topAction, (int)getX(), (int)getY(), 0);
+        topBullet.set(topAction, (int)getShipX(), (int)getShipY(), 0);
         topBullet.ix = topBullet.x;
         topBullet.iy = topBullet.y;
         topBullet.speed = 0;
@@ -307,7 +309,7 @@ public class BulletManager
         if(topAction == null)
             return shot;
 
-        if(gameObject.state != AlienShip.DEATH)
+        if(ship.state != AlienShip.DEATH)
             shot = addBullets();
 
         moveBullets();
@@ -345,12 +347,20 @@ public class BulletManager
 		return screenWidth;
 	}
 
-	public float getX() {
-	    return (gameObject.x + offsetX) * 16;
+	public float getShipX() {
+	    return (ship.x + offsetX) * 16;
 	}
 
-	public float getY() {
-	    return (gameObject.y + offsetY) * 16;
+	public float getShipY() {
+	    return (ship.y + offsetY) * 16;
+	}
+
+	public float getPlayerX() {
+	    return (player.x + player.width / 2) * 16;
+	}
+
+	public float getPlayerY() {
+	    return (player.y + player.height / 2) * 16;
 	}
 
 	private Rectangle rectangle = new Rectangle();

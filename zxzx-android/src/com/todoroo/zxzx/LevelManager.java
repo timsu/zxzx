@@ -28,7 +28,7 @@ public class LevelManager {
                 @Override
                 public AlienShip createAlienShip() {
                     AlienShip alienShip = new AlienShip(Assets.alien1,
-                            new String[] { "[Ikaruga]_r5_vrp.xml", "[Ikaruga]_drc2.xml" },
+                            new String[] { "[Ikaruga]_r1_mdl.xml", "[Ikaruga]_drc2.xml" },
                             new Point[] { new Point(136, 200), new Point(376, 200) },
                             50);
 
@@ -49,7 +49,7 @@ public class LevelManager {
                 @Override
                 public AlienShip createAlienShip() {
                     AlienShip alienShip = new AlienShip(Assets.alien2,
-                            new String[] { "[G_DARIUS]_homing_laser.xml", "grow.xml" },
+                            new String[] { "[G_DARIUS]_homing_laser.xml", "[daiouzyou]_r1_boss_1.xml" },
                             new Point[] { new Point(71, 271), new Point(437, 271) },
                             70);
 

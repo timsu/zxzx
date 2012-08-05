@@ -21,6 +21,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.todoroo.zxzx.BulletManager;
+import com.todoroo.zxzx.World;
 import com.todoroo.zxzx.general.GameObject;
 
 public class AlienShip extends GameObject {
@@ -57,16 +58,16 @@ public class AlienShip extends GameObject {
         maxAlienHealth = alienHealth = health;
     }
 
-    public void initBulletManagers(Rectangle roomBounds) {
+    public void initBulletManagers(World world, Rectangle roomBounds) {
         bulletManagers = new BulletManager[bulletSources.length];
         for(int i = 0; i < bulletManagers.length; i++) {
             bulletManagers[i] = new BulletManager((int)(roomBounds.width * 16),
                     (int)(roomBounds.height * 16));
             bulletManagers[i].loadBulletML(bulletPatterns[0]);
-            bulletManagers[i].initGameObject(this, bulletSources[i].x,
+            bulletManagers[i].initGameObjects(this, world.getPlayer(), bulletSources[i].x,
                     bulletSources[i].y);
         }
-    };
+    }
 
     //
 
