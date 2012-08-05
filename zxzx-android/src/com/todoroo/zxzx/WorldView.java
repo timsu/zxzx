@@ -176,7 +176,9 @@ public class WorldView {
 	private void drawBullets() {
 	    BulletManager manager = world.getBulletManager();
 
+	    renderer.begin();
 	    manager.draw(renderer);
+	    renderer.end();
 	}
 
 	private class BulletRenderer implements AbstractBulletRenderer {
@@ -184,6 +186,7 @@ public class WorldView {
 	    private ShapeRenderer shapeRenderer = new ShapeRenderer(500);
 
 	    public void begin() {
+	        shapeRenderer.setProjectionMatrix(worldCam.combined);
 	        shapeRenderer.begin(ShapeType.Line);
 	    }
 

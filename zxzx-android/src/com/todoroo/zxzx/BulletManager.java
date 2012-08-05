@@ -5,11 +5,7 @@
  */
 package com.todoroo.zxzx;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.Random;
 import java.util.Vector;
 
@@ -29,11 +25,11 @@ import jp.gr.java_conf.abagames.bulletml_demo.noiz.BulletImpl;
 import jp.gr.java_conf.abagames.bulletml_demo.noiz.BulletmlNoizUtil;
 
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import android.content.res.AssetManager;
 import android.util.Log;
+
+import com.badlogic.gdx.files.FileHandle;
 
 
 /**
@@ -337,11 +333,11 @@ public class BulletManager
      *
      * @param The document name.
      */
-    public void loadBulletML(String document)
+    public void loadBulletML(FileHandle bullets)
     {
         try
         {
-            Document doc = getDocument(document);
+            Document doc = getDocument(bullets);
 
             Bulletml bulletML = new Bulletml(doc);
 
@@ -389,34 +385,6 @@ public class BulletManager
     }
 
     /**
-     * Read file contents into string.
-     *
-     * @param The file name
-     *
-     * @return Contents string.
-     *
-     * @throws IOException
-     */
-    private String readFile(String fname) throws IOException
-    {
-    	String line ="";
-
-    	AssetManager assetManager = ContextManager.getResources().getAssets();
-    	InputStream stream = assetManager.open(fname);
-
-        BufferedReader dis =new BufferedReader (new InputStreamReader(stream));
-
-        StringBuffer fBuf = new StringBuffer() ;
-
-        while ( (line = dis.readLine())!= null)
-        {
-        	fBuf.append(line);
-        }
-
-        return fBuf.toString();
-    }
-
-    /**
      * Build DOM document from file.
      *
      * @param The file name.
@@ -428,15 +396,13 @@ public class BulletManager
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    Document getDocument(String fname) throws IOException, ParserConfigurationException, FactoryConfigurationError, SAXException
+    Document getDocument(FileHandle handle) throws IOException, ParserConfigurationException, FactoryConfigurationError, SAXException
     {
     	Document document = null;
 
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-        String in = readFile(fname);
-
-        document = builder.parse(new InputSource(new StringReader(in)));
+        document = builder.parse(handle.read(1024));
 
     	 return document;
     }
@@ -529,6 +495,8 @@ public class BulletManager
      */
     public void update()
     {
+        if(topAction == null)
+            return;
         addBullets();
         moveBullets();
     }

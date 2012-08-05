@@ -15,6 +15,7 @@ package com.todoroo.zxzx;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -151,7 +152,9 @@ public class World {
         createPlayerShots();
 
         bulletManager.initBullets();
-        bulletManager.loadBulletML("assets/bulletml/bar.xml");
+
+        bulletManager.loadBulletML(Gdx.files.internal("bulletml/[Ikaruga]_r1_mdl.xml"));
+        System.err.println("loaded bulletml");
         bulletManager.setHVStat(0);
 
         setState(PLAYING);
