@@ -35,25 +35,29 @@ public class AlienShip extends GameObject {
 
     private String[] bulletPatterns;
 
-    private static final float SPEED = 30.0f;
+    public float speed = 30.0f;
 
     private Random random = new Random();
 
     private int alienHealth, maxAlienHealth;
 
-    public AlienShip(TextureRegion sprite, String[] bulletPatternFiles) {
+    private Point[] bulletSources;
+
+    public AlienShip(TextureRegion sprite, String[] bulletPatternFiles,
+            Point[] bulletSources, int health) {
         this.sprite = sprite;
+        this.width = sprite.getRegionWidth();
+        this.height = sprite.getRegionHeight();
+        this.bulletSources = bulletSources;
 
         bulletPatterns = new String[bulletPatternFiles.length];
         for(int i = 0; i < bulletPatterns.length; i++)
             bulletPatterns[i] = Gdx.files.internal("bulletml/" + bulletPatternFiles[i]).readString();
 
-        maxAlienHealth = alienHealth = 50;
+        maxAlienHealth = alienHealth = health;
     }
 
     public void initBulletManagers(Rectangle roomBounds) {
-        Point[] bulletSources = new Point[] { new Point(136, 200), new Point(376, 200) };
-
         bulletManagers = new BulletManager[bulletSources.length];
         for(int i = 0; i < bulletManagers.length; i++) {
             bulletManagers[i] = new BulletManager((int)(roomBounds.width * 16),
@@ -101,7 +105,7 @@ public class AlienShip extends GameObject {
             velocityY = -3 + 6 * random.nextFloat();
         }
 
-        float d = delta * SPEED;
+        float d = delta * speed;
         x += velocityX * d;
         y += velocityY * d;
     }
