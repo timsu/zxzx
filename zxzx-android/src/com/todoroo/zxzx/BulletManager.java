@@ -6,6 +6,7 @@
 package com.todoroo.zxzx;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +25,7 @@ import jp.gr.java_conf.abagames.bulletml_demo.noiz.BulletImpl;
 import jp.gr.java_conf.abagames.bulletml_demo.noiz.BulletmlNoizUtil;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.util.Log;
@@ -41,11 +43,6 @@ import com.todoroo.zxzx.general.GameObject;
 public class BulletManager
 {
 
-    public static class StateData {
-        public float controlX = 0;
-        public float controlY = 0;
-    }
-
     private final int BULLET_NOT_EXIST = BulletImpl.NOT_EXIST;
     private final int BULLET_MAX = 256;
     private BulletImpl[] bullet = new BulletImpl[BULLET_MAX];
@@ -57,16 +54,12 @@ public class BulletManager
     private int screenHeight = 0;
 	private int screenWidth = 0;
 
-    // A curse on three letter variable names!
-    public int xPosition;
-    public int yPosition;
-
     // BulletML handler.
     private IActionElmChoice[] topAction;
     private BulletImpl topBullet;
     private int shotCnt = 0;
 
-    private StateData state = new StateData();
+    private GameObject gameObject;
 
     /**
      * @param context
@@ -78,7 +71,7 @@ public class BulletManager
     	this.screenWidth = screenWidth;
     	this.screenHeight = screenHeight;
 
-    	initGame();
+    	initBullets();
 	}
 
     /**
@@ -86,10 +79,12 @@ public class BulletManager
      * @param x
      *
      */
-    public void initBullets(float x, float y)
+    public void initGameObject(GameObject source)
     {
-        state.controlX = x;
-        state.controlY = y;
+        gameObject = source;
+    }
+
+    public void initBullets() {
 
         for (int i = 0; i < bullet.length; i++)
         {
@@ -142,13 +137,9 @@ public class BulletManager
         return null;
     }
 
-    /**
-     *
-     */
-    private void initGame()
-    {
-        xPosition = (int)state.controlX;
-        yPosition = (int)state.controlY;
+    public void loadBulletML(FileHandle fileHandle) {
+        String stringData = fileHandle.readString();
+        loadBulletML(stringData);
     }
 
     /**
@@ -156,11 +147,11 @@ public class BulletManager
      *
      * @param The document name.
      */
-    public void loadBulletML(FileHandle bullets)
+    public void loadBulletML(String mlContents)
     {
         try
         {
-            Document doc = getDocument(bullets);
+            Document doc = getDocument(mlContents);
 
             Bulletml bulletML = new Bulletml(doc);
 
@@ -219,13 +210,13 @@ public class BulletManager
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    Document getDocument(FileHandle handle) throws IOException, ParserConfigurationException, FactoryConfigurationError, SAXException
+    Document getDocument(String mlContents) throws IOException, ParserConfigurationException, FactoryConfigurationError, SAXException
     {
     	Document document = null;
 
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-        document = builder.parse(handle.read(1024));
+        document = builder.parse(new InputSource(new StringReader(mlContents)));
 
     	 return document;
     }
@@ -255,7 +246,7 @@ public class BulletManager
             return;
         }
 
-        topBullet.set(topAction, (int)state.controlX, (int)state.controlY, 0);
+        topBullet.set(topAction, (int)getX(), (int)getY(), 0);
         topBullet.speed = 0;
         topBullet.direction = 0;
     }
@@ -300,8 +291,12 @@ public class BulletManager
     {
         if(topAction == null)
             return;
+
         addBullets();
         moveBullets();
+
+        //if(topBullet != null)
+            //topBullet.set(topAction, (int)getX(), (int)getY(), 0);
     }
 
     /**
@@ -332,6 +327,14 @@ public class BulletManager
 	public int getScreenWidth()
 	{
 		return screenWidth;
+	}
+
+	public float getX() {
+	    return (gameObject.x + gameObject.width / 2) * 16;
+	}
+
+	public float getY() {
+	    return (gameObject.y + gameObject.height / 2) * 16;
 	}
 
 	private Rectangle rectangle = new Rectangle();

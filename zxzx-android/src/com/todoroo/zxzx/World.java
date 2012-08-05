@@ -21,6 +21,7 @@ import com.todoroo.zxzx.entity.BaseShot;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
 import com.todoroo.zxzx.general.Colliders;
+import com.todoroo.zxzx.general.Colliders.ColliderHandler;
 import com.todoroo.zxzx.general.Colliders.RemovalHandler;
 import com.todoroo.zxzx.general.Config;
 import com.todoroo.zxzx.general.GameObject;
@@ -90,7 +91,6 @@ public class World {
 		levelManager = new LevelManager();
 
 		bulletManager = new BulletManager((int)(roomBounds.width * 16), (int)(roomBounds.height * 16));
-		bulletManager.initBullets(roomBounds.width * 16 / 2, roomBounds.height * 16 - 1000);
 	}
 
 	/** Resets the {@link World} to its starting state. */
@@ -175,7 +175,9 @@ public class World {
         alienShip = levelManager.initAlienShip(level, bulletManager);
 
         alienShip.x = roomBounds.width / 2 - alienShip.width / 2;
-        alienShip.y = roomBounds.height;
+        alienShip.y = roomBounds.height - alienShip.height;
+
+        bulletManager.initGameObject(alienShip);
     }
 
     private void placePlayer () {
@@ -227,18 +229,7 @@ public class World {
 
     private void checkMobileMobileCollisions () {
         // bulletManager.collide(player);
-
-        /*Colliders.collide(player, robots, gameObjectCollisionHandler);
-        Colliders.collide(player, robotShots, gameObjectCollisionHandler);
-        Colliders.collide(captain, player, captainGameObjectCollisionHandler);
-        Colliders.collide(playerShots, robots, shotRobotCollisionHandler);
-        Colliders.collide(playerShots, robotShots, gameObjectCollisionHandler);
-        Colliders.collide(robots, robotRobotCollisionHandler);
-        Colliders.collide(robotShots, robots, gameObjectCollisionHandler);
-        Colliders.collide(robotShots, gameObjectCollisionHandler);
-        Colliders.collide(captain, robots, captainGameObjectCollisionHandler);
-        Colliders.collide(captain, playerShots, captainGameObjectCollisionHandler);
-        Colliders.collide(captain, robotShots, captainGameObjectCollisionHandler);*/
+        Colliders.collide(alienShip, playerShots, playerShotCollisionHandler);
     }
 
     private void removeMarkedMobiles () {
@@ -251,9 +242,18 @@ public class World {
         player.y = Math.max(0, Math.min(roomBounds.height - player.height, player.y));
 
         alienShip.x = Math.max(0, Math.min(roomBounds.width - alienShip.width, alienShip.x));
-        alienShip.y = Math.max(roomBounds.height - alienShip.height,
-                Math.min(roomBounds.height - alienShip.height, alienShip.y));
+        alienShip.y = Math.max(roomBounds.height - 2 * alienShip.height,
+                Math.min(roomBounds.height - 2 * alienShip.height / 3, alienShip.y));
     }
+
+    private ColliderHandler<AlienShip, PlayerShot> playerShotCollisionHandler = new ColliderHandler<AlienShip, PlayerShot>() {
+
+        public void onCollision(AlienShip t, PlayerShot u) {
+            System.err.println("player shot alien.");
+            u.inCollision = true;
+        }
+
+    };
 
     // -------- getters / setters
 

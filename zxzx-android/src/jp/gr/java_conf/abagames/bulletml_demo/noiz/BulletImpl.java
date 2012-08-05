@@ -127,7 +127,8 @@ public class BulletImpl
 
     public float getAimDeg()
     {
-        return ((float) DegUtil.getDeg(gameManager.xPosition - x, gameManager.yPosition - y) * 360) / SCTable.TABLE_SIZE;
+        return ((float) DegUtil.getDeg((int)gameManager.getX() - x,
+                (int)gameManager.getY() - y) * 360) / SCTable.TABLE_SIZE;
     }
 
     public void vanish()

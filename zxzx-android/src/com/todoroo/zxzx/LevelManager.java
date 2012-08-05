@@ -30,7 +30,7 @@ public class LevelManager {
 
     public LevelManager() {
         levels = new LevelData[] {
-            new LevelData(1, Assets.alien1, 435, 165, new String[] { "grow.xml", "2round.xml" })
+            new LevelData(1, Assets.alien1, 430, 200, new String[] { "grow.xml", "2round.xml" })
         };
     }
 

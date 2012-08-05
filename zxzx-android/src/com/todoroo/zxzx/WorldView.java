@@ -120,10 +120,10 @@ public class WorldView {
 		spriteBatch.begin();
 		spriteBatch.setColor(Color.WHITE);
 		drawPlayersShots();
-		drawPlayer();
-		drawBoss();
-		drawParticles();
 		drawBullets();
+		drawBoss();
+		drawPlayer();
+		drawParticles();
 		spriteBatch.end();
 	}
 
