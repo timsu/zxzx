@@ -18,8 +18,11 @@ import static com.badlogic.gdx.math.MathUtils.random;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.todoroo.zxzx.entity.BaseShot;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
+import com.todoroo.zxzx.general.Colliders;
+import com.todoroo.zxzx.general.Colliders.RemovalHandler;
 import com.todoroo.zxzx.general.Config;
 import com.todoroo.zxzx.general.GameObject;
 import com.todoroo.zxzx.general.Pools;
@@ -48,7 +51,7 @@ public class World {
 	public static final float OUTER_WALL_ADJUST = WALL_HEIGHT;
 
 	private static final int MAX_PLAYER_SHOTS = Config.asInt("Player.maxShots", 4);
-	private static final float FIRING_INTERVAL = Config.asFloat("Player.firingInterval", 0.25f);
+	private static final float FIRING_INTERVAL = Config.asFloat("Player.firingInterval", 1f);
 
 	// Game states.
 	public static final int RESETTING = 1;
@@ -116,6 +119,8 @@ public class World {
     private void updatePlaying (float delta) {
         player.update(delta);
         updateMobiles(delta);
+        checkForCollisions();
+        clipBounds();
     }
 
     private void updateResetting () {
@@ -174,6 +179,51 @@ public class World {
             shot.fire(x, y, dx, dy);
             playerShots.add(shot);
         }
+    }
+
+    private final RemovalHandler<BaseShot> shotRemovalHandler = new RemovalHandler<BaseShot>() {
+        public void onRemove (BaseShot shot) {
+            //
+        }
+    };
+
+    private void doPlayerHit() {
+        //
+    }
+
+    // -------- collisions
+
+    private void checkForCollisions () {
+        checkMobileMobileCollisions();
+        removeMarkedMobiles();
+
+        if (state == PLAYING && player.inCollision) {
+            doPlayerHit();
+        }
+    }
+
+    private void checkMobileMobileCollisions () {
+        /*Colliders.collide(player, robots, gameObjectCollisionHandler);
+        Colliders.collide(player, robotShots, gameObjectCollisionHandler);
+        Colliders.collide(captain, player, captainGameObjectCollisionHandler);
+        Colliders.collide(playerShots, robots, shotRobotCollisionHandler);
+        Colliders.collide(playerShots, robotShots, gameObjectCollisionHandler);
+        Colliders.collide(robots, robotRobotCollisionHandler);
+        Colliders.collide(robotShots, robots, gameObjectCollisionHandler);
+        Colliders.collide(robotShots, gameObjectCollisionHandler);
+        Colliders.collide(captain, robots, captainGameObjectCollisionHandler);
+        Colliders.collide(captain, playerShots, captainGameObjectCollisionHandler);
+        Colliders.collide(captain, robotShots, captainGameObjectCollisionHandler);*/
+    }
+
+    private void removeMarkedMobiles () {
+        Colliders.removeOutOfBounds(shotPool, playerShots, roomBounds);
+        Colliders.removeMarkedCollisions(shotPool, playerShots, shotRemovalHandler);
+    }
+
+    private void clipBounds () {
+        player.x = Math.max(0, Math.min(roomBounds.width - player.width, player.x));
+        player.y = Math.max(0, Math.min(roomBounds.height - player.height, player.y));
     }
 
     // -------- getters / setters

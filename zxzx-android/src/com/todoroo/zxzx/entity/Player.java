@@ -24,10 +24,10 @@ public class Player extends GameObject {
 	public static final int FLYING_LEFT = FLYING + 1;
 	public static final int FLYING_RIGHT = FLYING_LEFT + 1;
 
-	private static final float SPEED = Config.asFloat("Player.speed", 12.5f);
+	private static final float SPEED = Config.asFloat("Player.accel", 60f);
+	private static final float DRAG = Config.asFloat("Player.drag", 0.95f);
 
-	private float dx;
-	private float dy;
+	private float ax = 0, ay = 0, vx = 0, vy = 0;
 
 	public Player () {
 		width = Assets.playerWidth;
@@ -37,11 +37,11 @@ public class Player extends GameObject {
 
 	@Override
 	public void update (float delta) {
-		if (dx > 0.0f) {
+		if (vx > 2f) {
 			if (state != FLYING_RIGHT) {
 				setState(FLYING_RIGHT);
 			}
-		} else if (dx < 0.0f) {
+		} else if (vx < -2f) {
 			if (state != FLYING_LEFT) {
 				setState(FLYING_LEFT);
 			}
@@ -50,12 +50,16 @@ public class Player extends GameObject {
 		}
 		stateTime += delta;
 		float d = delta * SPEED;
-		x += dx * d;
-		y += dy * d;
+
+		vx = vx * (DRAG) + ax * d;
+		vy = vy * (DRAG) + ay * d;
+
+		x += vx;
+		y += vy;
 	}
 
 	public void setController (float x, float y) {
-		dx = x;
-		dy = y;
+		ax = x;
+		ay = y;
 	}
 }
