@@ -345,17 +345,24 @@ public class BulletManager
     public void collide(GameObject go) {
         for (int i = BULLET_MAX - 1; i >= 0; i--) {
             if (bullet[i].x != BULLET_NOT_EXIST) {
-                rectangle.x = (bullet[i].x >> 4) - 3;
-                rectangle.y = (bullet[i].y >> 4) - 3;
-                rectangle.height = 6;
-                rectangle.width = 6;
+                rectangle.x = (bullet[i].x >> 4) - 2;
+                rectangle.y = (bullet[i].y >> 4) - 2;
+                rectangle.height = 4;
+                rectangle.width = 4;
 
                 if(go.intersects(rectangle)) {
+                    bullet[i].x = BULLET_NOT_EXIST;
                     go.inCollision = true;
                     break;
                 }
             }
         }
+
+    }
+
+    public void clear() {
+        for (int i = BULLET_MAX - 1; i >= 0; i--)
+            bullet[i].x = BULLET_NOT_EXIST;
 
     }
 

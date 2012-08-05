@@ -89,6 +89,7 @@ public class World {
 		};
 
 		bulletManager = new BulletManager((int)(roomBounds.width * 16), (int)(roomBounds.height * 16));
+		bulletManager.initBullets(roomBounds.width * 16 / 2, roomBounds.height * 16 - 1000);
 	}
 
 	/** Resets the {@link World} to its starting state. */
@@ -160,12 +161,12 @@ public class World {
 
     private void populateLevel () {
         setRandomSeedFromLevel();
+        bulletManager.clear();
+
         placePlayer();
         createPlayerShots();
 
-        bulletManager.initBullets(roomBounds.width * 16 / 2, roomBounds.height * 16 - 1000);
         bulletManager.loadBulletML(Gdx.files.internal("bulletml/grow.xml"));
-
         setState(PLAYING);
     }
 
