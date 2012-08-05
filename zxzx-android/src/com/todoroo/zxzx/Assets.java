@@ -65,6 +65,7 @@ public class Assets {
     public static Sound explosion1;
     public static Sound explosion2;
     public static Sound grz;
+    public static Sound extend;
     public static Sound shot;
 
 	public static float playerWidth;
@@ -136,6 +137,7 @@ public class Assets {
         explosion1 = loadSound("explosion1.wav");
         explosion2 = loadSound("explosion2.wav");
         grz = loadSound("grz.wav");
+        extend = loadSound("extend.wav");
         shot = loadSound("shot.wav");
     }
 

@@ -22,6 +22,7 @@ public class SoundManager implements WorldListener {
 	private float lastPlayerHitTime = 0;
 
     public void onPlayerFired() {
+
     }
 
     public void onPlayerHit() {
@@ -32,14 +33,15 @@ public class SoundManager implements WorldListener {
     }
 
     public void onPlayerSpawned() {
+        Assets.playSound(Assets.extend);
     }
 
     public void onWorldReset() {
     }
 
     public void onAlienFired() {
-        if (now - lastAlienFireTime > 0.1) {
-            Assets.shot.play(0.4f);
+        if (now - lastAlienFireTime > 0.2f) {
+            Assets.shot.play(0.1f);
             lastAlienFireTime = now;
         }
     }
