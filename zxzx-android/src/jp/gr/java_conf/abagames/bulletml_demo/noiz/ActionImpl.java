@@ -70,6 +70,9 @@ public class ActionImpl
 
     public void set(Action action, BulletImpl bullet)
     {
+        if(action == null)
+            return;
+
         this.action = action.getContent();
         repeat = 1;
         pc = -1;

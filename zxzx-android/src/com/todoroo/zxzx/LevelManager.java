@@ -49,9 +49,9 @@ public class LevelManager {
                 @Override
                 public AlienShip createAlienShip() {
                     AlienShip alienShip = new AlienShip(Assets.alien2,
-                            new String[] { "[G_DARIUS]_homing_laser.xml", "[daiouzyou]_r1_boss_1.xml" },
+                            new String[] { "248shot.xml", "[G_DARIUS]_homing_laser.xml" },
                             new Point[] { new Point(71, 271), new Point(437, 271) },
-                            80);
+                            90);
 
                     Array<Rectangle> rectangles = new Array<Rectangle>();
                     rectangles.add(new Rectangle(184, 126, 137, 291));

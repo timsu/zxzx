@@ -69,6 +69,10 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 		pauseGame();
 	}
 
+	public void restartGame() {
+	    world.restartGame();
+	}
+
 	@Override
 	public void hide () {
 		Gdx.input.setCatchBackKey(false);

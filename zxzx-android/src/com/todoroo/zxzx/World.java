@@ -72,6 +72,7 @@ public class World {
 	private int level;
 	private float stateTime;
 	private float levelTime;
+	private float gameTime;
 	private boolean isPaused;
 	private float pausedTime;
 
@@ -84,6 +85,7 @@ public class World {
 		roomBounds = new Rectangle(0, 0, 800, 1280);
 		player = new Player();
 		level = 0;
+		gameTime = 0;
 
 		shotPool = new Pool<PlayerShot>(MAX_PLAYER_SHOTS, MAX_PLAYER_SHOTS) {
 			@Override
@@ -100,6 +102,12 @@ public class World {
 		setState(RESETTING);
 	}
 
+    public void restartGame() {
+        level = 0;
+        gameTime = 0;
+        reset();
+    }
+
 	// -------- updating
 
 	/** Called when the {@link World} is to be updated.
@@ -114,6 +122,8 @@ public class World {
                 updateResetting();
                 break;
 			case PLAYING:
+			    levelTime += delta;
+			    gameTime += delta;
 				updatePlaying(delta);
 				break;
 			case PLAYER_DEAD:
@@ -245,13 +255,13 @@ public class World {
 
     private void doPlayerHit() {
         setState(PLAYER_DEAD);
-        restartLevelTime = now + 10;
+        restartLevelTime = now + 5;
         notifier.onPlayerHit();
     }
 
     private void doAlienDied() {
         setState(ALIEN_DEAD);
-        restartLevelTime = now + 20;
+        restartLevelTime = now + 10;
         notifier.onAlienDestroyed();
     }
 
@@ -355,6 +365,10 @@ public class World {
 
     public float getLevelTime() {
         return levelTime;
+    }
+
+    public float getGameTime() {
+        return gameTime;
     }
 
     public Player getPlayer () {

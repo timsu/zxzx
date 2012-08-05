@@ -61,8 +61,8 @@ public class AlienShip extends GameObject {
     public void initBulletManagers(World world, Rectangle roomBounds) {
         bulletManagers = new BulletManager[bulletSources.length];
         for(int i = 0; i < bulletManagers.length; i++) {
-            bulletManagers[i] = new BulletManager((int)(roomBounds.width * 16),
-                    (int)(roomBounds.height * 16));
+            bulletManagers[i] = new BulletManager((int)(roomBounds.width),
+                    (int)(roomBounds.height));
             bulletManagers[i].loadBulletML(bulletPatterns[0]);
             bulletManagers[i].initGameObjects(this, world.getPlayer(), bulletSources[i].x,
                     bulletSources[i].y);

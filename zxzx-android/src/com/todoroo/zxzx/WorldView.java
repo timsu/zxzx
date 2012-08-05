@@ -46,6 +46,8 @@ public class WorldView {
 		void pauseGame ();
 
 		void resumeGame ();
+
+        void restartGame();
 	}
 
 	private static final float PARTICLE_SIZE = Config.asFloat("particle.size", 0.1875f);
@@ -115,13 +117,15 @@ public class WorldView {
         }
 
         if(world.getState() == World.ALIEN_DEAD) {
-            String cleared = String.format("Stage cleared in %.02f.", world.getLevelTime());
+            String cleared = String.format("Stage cleared in %.02fs.", world.getLevelTime());
             drawText(cleared);
         } else if(world.getState() == World.PLAYER_DEAD)
             drawText("You died.");
-        else if(world.getState() == World.VICTORY)
-            drawText("YOU WIN. VICTORY!!!");
-        else if(world.isPaused())
+        else if(world.getState() == World.VICTORY) {
+            String cleared = String.format("YOU WIN. VICTORY!\n\nGame cleared in %.02fs.\n\nTap to restart.",
+                    world.getGameTime());
+            drawText(cleared);
+        } else if(world.isPaused())
             drawText("Paused");
 	}
 
@@ -246,9 +250,11 @@ public class WorldView {
 		presenter.setController(0.0f, 0.0f);
 		if (Gdx.input.justTouched()) {
 			worldCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			if (world.isPaused()) {
+			if (world.isPaused())
 				presenter.resumeGame();
-			}
+			else if(world.getState() == World.VICTORY)
+			    presenter.restartGame();
+
 		} else if (world.getState() == World.PLAYING && Gdx.input.isTouched()) {
 			worldCam.unproject(dragPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 			float dx = dragPoint.x - world.getPlayer().x - world.getPlayer().width / 2;
