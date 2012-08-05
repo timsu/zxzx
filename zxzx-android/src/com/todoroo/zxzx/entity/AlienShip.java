@@ -27,6 +27,7 @@ public class AlienShip extends GameObject {
 
     public static int MOVING = INACTIVE + 1;
     public static int SHOOTING = INACTIVE + 2;
+    public static int DEATH = INACTIVE + 3;
 
     private TextureRegion sprite;
 
@@ -38,12 +39,16 @@ public class AlienShip extends GameObject {
 
     private Random random = new Random();
 
+    private int alienHealth, maxAlienHealth;
+
     public AlienShip(TextureRegion sprite, String[] bulletPatternFiles) {
         this.sprite = sprite;
 
         bulletPatterns = new String[bulletPatternFiles.length];
         for(int i = 0; i < bulletPatterns.length; i++)
             bulletPatterns[i] = Gdx.files.internal("bulletml/" + bulletPatternFiles[i]).readString();
+
+        maxAlienHealth = alienHealth = 100;
     }
 
     public void initBulletManagers(Rectangle roomBounds) {
@@ -82,8 +87,8 @@ public class AlienShip extends GameObject {
             bulletSwitchCounter = 0;
         }
 
-        for(int i = 0; i < bulletManagers.length; i++)
-            bulletManagers[i].update();
+        if(state == DEATH)
+            return;
 
         if(state == SHOOTING) {
             return;
@@ -107,5 +112,24 @@ public class AlienShip extends GameObject {
 
     public BulletManager[] getBulletManagers() {
         return bulletManagers;
+    }
+
+    /**
+     * mark a hit on the alien
+     *
+     * @param damage
+     * @return true if alien is dead
+     */
+    public boolean hit(int damage) {
+        alienHealth -= damage;
+        if(alienHealth <= 0) {
+            setState(DEATH);
+            return true;
+        }
+        return false;
+    }
+
+    public float getAlienHealthPercentage() {
+        return alienHealth * 1.0f / maxAlienHealth;
     }
 }

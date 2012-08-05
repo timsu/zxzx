@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.todoroo.zxzx.entity.AlienShip;
 import com.todoroo.zxzx.general.CollisionGeometry;
-import com.todoroo.zxzx.general.Rectangles;
 
 public class LevelManager {
 
@@ -30,7 +29,7 @@ public class LevelManager {
 
     public LevelManager() {
         levels = new LevelData[] {
-            new LevelData(1, Assets.alien1, 430, 200, new String[] { "grow.xml", "[Ikaruga]_drc2.xml" })
+            new LevelData(1, Assets.alien1, 430, 130, new String[] { "grow.xml", "[Ikaruga]_drc2.xml" })
         };
     }
 
@@ -43,12 +42,11 @@ public class LevelManager {
         alienShip.height = levelData.alienTexture.getRegionHeight();
 
         Array<Rectangle> rectangles = new Array<Rectangle>();
-        Rectangle r = new Rectangle();
-        float x = alienShip.width - levelData.alienWidth / 2.0f;
-        float y = alienShip.height- levelData.alienHeight/ 2.0f;
+        float x = (alienShip.width - levelData.alienWidth) / 2.0f;
+        float y = (alienShip.height- levelData.alienHeight) / 2.0f;
         float w = alienShip.width - 2 * x;
         float h = alienShip.height - 2 * y;
-        Rectangles.setRectangle(r, x, y, w, h);
+        Rectangle r = new Rectangle(x, y, w, h);
         rectangles.add(r);
         alienShip.geometry = new CollisionGeometry(rectangles);
 

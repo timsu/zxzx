@@ -106,6 +106,8 @@ public class WorldView {
             }
 
         case World.PLAYER_DEAD:
+        case World.ALIEN_DEAD:
+
             drawBackground();
             drawMobiles();
         }
@@ -129,8 +131,19 @@ public class WorldView {
 
 	private void drawBoss() {
 	    AlienShip boss = world.getAlienShip();
-	    if(boss != null && boss.getSprite() != null)
-	        draw(boss, boss.getSprite());
+	    if(boss != null && boss.getSprite() != null) {
+	        if(boss.state == AlienShip.DEATH)
+	            draw(boss, Assets.playerDeathAnimation.getKeyFrame(boss.stateTime, false));
+	        else
+	            draw(boss, boss.getSprite());
+
+	        spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+            spriteBatch.setColor(1, 1, 0.5f, 0.8f);
+            float width = boss.getAlienHealthPercentage() * worldCam.viewportWidth;
+            spriteBatch.draw(Assets.pureWhiteTextureRegion,
+                    0, worldCam.viewportHeight - 2, width, 2);
+            spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+	    }
     }
 
     private void drawPlayersShots () {

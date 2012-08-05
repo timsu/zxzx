@@ -302,7 +302,9 @@ public class BulletManager
         if(topAction == null)
             return;
 
-        addBullets();
+        if(gameObject.state != AlienShip.DEATH)
+            addBullets();
+
         moveBullets();
     }
 

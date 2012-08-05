@@ -58,6 +58,7 @@ public class World {
 	public static final int RESETTING = 1;
 	public static final int PLAYING = 2;
 	public static final int PLAYER_DEAD = 3;
+	public static final int ALIEN_DEAD = 4;
 
 	private final Pool<PlayerShot> shotPool;
 	private final Rectangle roomBounds;
@@ -114,6 +115,9 @@ public class World {
 			case PLAYER_DEAD:
                 updatePlayerDead(delta);
                 break;
+			case ALIEN_DEAD:
+                updateAlienDead(delta);
+                break;
 			}
 		} else {
 			pausedTime += delta;
@@ -122,6 +126,10 @@ public class World {
 
     private void updateMobiles (float delta) {
         update(playerShots, delta);
+
+        BulletManager[] bulletManagers = getBulletManagers();
+        for(int i = 0; i < bulletManagers.length; i++)
+            bulletManagers[i].update();
     }
 
     private void updatePlaying (float delta) {
@@ -138,11 +146,21 @@ public class World {
 
     private void updatePlayerDead (float delta) {
         player.update(delta);
+
         updateMobiles(delta);
         checkForCollisions();
+
         if (now >= restartLevelTime) {
             reset();
         }
+    }
+
+    private void updateAlienDead (float delta) {
+        player.update(delta);
+        alienShip.update(delta);
+
+        updateMobiles(delta);
+        clipBounds();
     }
 
     private void updateResetting () {
@@ -222,7 +240,9 @@ public class World {
     }
 
     private void checkMobileMobileCollisions () {
-        // bulletManager.collide(player);
+        BulletManager[] bulletManagers = getBulletManagers();
+        for(int i = 0; i < bulletManagers.length; i++)
+            bulletManagers[i].collide(player);
         Colliders.collide(alienShip, playerShots, playerShotCollisionHandler);
     }
 
@@ -243,7 +263,9 @@ public class World {
     private ColliderHandler<AlienShip, PlayerShot> playerShotCollisionHandler = new ColliderHandler<AlienShip, PlayerShot>() {
 
         public void onCollision(AlienShip t, PlayerShot u) {
-            System.err.println("player shot alien.");
+            if(t.hit(1)) {
+                setState(ALIEN_DEAD);
+            }
             u.inCollision = true;
         }
 
