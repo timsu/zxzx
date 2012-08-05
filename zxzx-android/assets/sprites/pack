@@ -3,6 +3,13 @@
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+8x8
+  rotate: false
+  xy: 451, 586
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
 PlayerAnim1
   rotate: false
   xy: 301, 103
@@ -45,10 +52,17 @@ PlayerShot
   orig: 32, 32
   offset: 0, 0
   index: -1
-8x8
+AlienShotSmall
   rotate: false
-  xy: 451, 586
-  size: 12, 12
-  orig: 12, 12
+  xy: 70, 202
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+AlienShotLarge
+  rotate: false
+  xy: 37, 202
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1

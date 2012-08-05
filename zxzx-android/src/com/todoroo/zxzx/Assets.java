@@ -50,6 +50,7 @@ public class Assets {
 	public static TextureRegion playerLeft;
 	public static TextureRegion playerRight;
 	public static TextureRegion playerShot;
+	public static TextureRegion alienShot;
 
 	public static Animation playerAnimation;
 
@@ -106,7 +107,7 @@ public class Assets {
 	    //
 	}
 
-	private static Sound[] loadSounds (String dir) {
+	public static Sound[] loadSounds (String dir) {
 		FileHandle dh = Gdx.files.internal("data/sounds/" + dir);
 		FileHandle[] fhs = dh.list();
 		List<Sound> sounds = new ArrayList<Sound>();

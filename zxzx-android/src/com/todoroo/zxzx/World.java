@@ -18,6 +18,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.todoroo.zxzx.entity.AlienShip;
 import com.todoroo.zxzx.entity.BaseShot;
 import com.todoroo.zxzx.entity.Player;
 import com.todoroo.zxzx.entity.PlayerShot;
@@ -29,7 +30,7 @@ import com.todoroo.zxzx.general.Pools;
 
 /** The <code>World</code> is the representation of the game world of <b>Very Angry Robots</b>. It knows nothing about how it will
  * be displayed, neither does it know about how the player is controlled, particle effects, sounds, nor anything else. It purely
- * knows about the {@link Player}, {@link Robot}s and the walls of the room that the player is in.
+ * knows about the {@link Player}, {@link AlienShip}s and the walls of the room that the player is in.
  *
  * @author Rod */
 public class World {
@@ -72,6 +73,8 @@ public class World {
 	private boolean isPaused;
 	private float pausedTime;
 
+	private BulletManager bulletManager;
+
 	/** Constructs a new {@link World}. */
 	public World() {
 		roomBounds = new Rectangle(0, 0, 800, 1280);
@@ -84,6 +87,8 @@ public class World {
 				return new PlayerShot();
 			}
 		};
+
+		bulletManager = new BulletManager((int)roomBounds.width, (int)roomBounds.height);
 	}
 
 	/** Resets the {@link World} to its starting state. */
@@ -115,6 +120,7 @@ public class World {
 
     private void updateMobiles (float delta) {
         update(playerShots, delta);
+        bulletManager.update();
     }
 
     private void updatePlaying (float delta) {
@@ -144,6 +150,11 @@ public class World {
         setRandomSeedFromLevel();
         placePlayer();
         createPlayerShots();
+
+        bulletManager.initBullets();
+        bulletManager.loadBulletML("assets/bulletml/bar.xml");
+        bulletManager.setHVStat(0);
+
         setState(PLAYING);
     }
 
@@ -224,6 +235,10 @@ public class World {
     }
 
     // -------- getters / setters
+
+    public BulletManager getBulletManager() {
+        return bulletManager;
+    }
 
     public void pause () {
         isPaused = true;

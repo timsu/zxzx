@@ -119,4 +119,12 @@ public class WorldPresenter extends GameScreen<ZxZxGame> implements WorldView.Pr
 	public void onLivesChanged (int lives) {
 		isDead = (lives == 0);
 	}
+
+	public int getScore() {
+        return score;
+    }
+
+	public boolean isDead() {
+        return isDead;
+    }
 }
