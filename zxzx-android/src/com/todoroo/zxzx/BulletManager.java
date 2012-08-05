@@ -32,6 +32,7 @@ import android.util.Log;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Rectangle;
+import com.todoroo.zxzx.entity.AlienShip;
 import com.todoroo.zxzx.general.GameObject;
 
 
@@ -231,6 +232,8 @@ public class BulletManager
             return;
         }
 
+        gameObject.setState(AlienShip.MOVING);
+
         shotCnt--;
 
         if (shotCnt > 0)
@@ -246,7 +249,11 @@ public class BulletManager
             return;
         }
 
+        gameObject.setState(AlienShip.SHOOTING);
+
         topBullet.set(topAction, (int)getX(), (int)getY(), 0);
+        topBullet.ix = topBullet.x;
+        topBullet.iy = topBullet.y;
         topBullet.speed = 0;
         topBullet.direction = 0;
     }
@@ -294,9 +301,6 @@ public class BulletManager
 
         addBullets();
         moveBullets();
-
-        //if(topBullet != null)
-            //topBullet.set(topAction, (int)getX(), (int)getY(), 0);
     }
 
     /**
@@ -334,7 +338,7 @@ public class BulletManager
 	}
 
 	public float getY() {
-	    return (gameObject.y + gameObject.height / 2) * 16;
+	    return (gameObject.y + 2 * gameObject.height / 3) * 16;
 	}
 
 	private Rectangle rectangle = new Rectangle();

@@ -34,6 +34,8 @@ public class BulletImpl
     public int y;
     public int px;
     public int py;
+    public int ix, iy;
+
     public Direction directionElement;
     public Speed speedElement;
     public float direction;

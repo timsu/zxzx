@@ -22,13 +22,16 @@ import com.todoroo.zxzx.general.GameObject;
 
 public class AlienShip extends GameObject {
 
+    public static int MOVING = INACTIVE + 1;
+    public static int SHOOTING = INACTIVE + 2;
+
     private TextureRegion sprite;
 
     private BulletManager bulletManager;
 
     private String[] bulletPattern;
 
-    private static final float SPEED = 40.0f;
+    private static final float SPEED = 30.0f;
 
     private Random random = new Random();
 
@@ -54,6 +57,7 @@ public class AlienShip extends GameObject {
 
     @Override
     public void update(float delta) {
+        stateTime += delta;
 
         bulletSwitchCounter += delta;
         velocityChangeCounter += delta;
@@ -62,6 +66,10 @@ public class AlienShip extends GameObject {
             bulletSwitchIndex = (bulletSwitchIndex + 1) % bulletPattern.length;
             bulletManager.loadBulletML(bulletPattern[bulletSwitchIndex]);
             bulletSwitchCounter = 0;
+        }
+
+        if(state == SHOOTING) {
+            return;
         }
 
         if (velocityChangeCounter > velocityChangeTarget) {

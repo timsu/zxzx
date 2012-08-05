@@ -5,12 +5,19 @@
  */
 package jp.gr.java_conf.abagames.bulletml_demo.noiz;
 
-import android.util.Log;
-
-import jp.gr.java_conf.abagames.bulletml.*;
-import jp.gr.java_conf.abagames.bulletml_demo.*;
-
 import java.util.Hashtable;
+
+import jp.gr.java_conf.abagames.bulletml.Action;
+import jp.gr.java_conf.abagames.bulletml.ActionRef;
+import jp.gr.java_conf.abagames.bulletml.Bullet;
+import jp.gr.java_conf.abagames.bulletml.BulletRef;
+import jp.gr.java_conf.abagames.bulletml.Fire;
+import jp.gr.java_conf.abagames.bulletml.FireRef;
+import jp.gr.java_conf.abagames.bulletml.IActionElmChoice;
+import jp.gr.java_conf.abagames.bulletml.IBulletElmChoice;
+import jp.gr.java_conf.abagames.bulletml.IFireElmChoice;
+import jp.gr.java_conf.abagames.bulletml_demo.BulletmlUtil;
+import android.util.Log;
 
 
 /**
@@ -55,7 +62,6 @@ public class BulletmlNoizUtil
 
             if (blt == null)
             {
-                Log.e("getBulletElm", "unknown bullet label: " + label);
             }
 
             return blt;
@@ -95,7 +101,7 @@ public class BulletmlNoizUtil
 
             if (act == null)
             {
-                Log.d("getActionElm", "unknown action label: " + label);
+
             }
 
             return act;
